@@ -1,0 +1,30 @@
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import NavBar from "./NavBar";
+
+import { Typography, Chip, Button } from "@material-ui/core";
+import { useSelector } from "react-redux";
+import emptyList from "./images/empty_book_list.png";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: theme.palette.action.disabled,
+  },
+}));
+
+export default function SearchPage() {
+  const wishList = useSelector((state) => state.wishList);
+  const classes = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <NavBar isFocused={true} />
+      <div className={classes.overlay}></div>
+    </div>
+  );
+}
