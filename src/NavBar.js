@@ -80,6 +80,7 @@ export default function NavBar(props) {
               autoFocus={isFocused}
               options={recentSearchesOptions}
               onChange={(selectedOption) =>
+                selectedOption &&
                 searchBook(selectedOption.value)
                   .then((res) => console.log(res))
                   .catch((err) => console.error(err))
