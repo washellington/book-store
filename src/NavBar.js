@@ -12,6 +12,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import logo from "./images/logo.png";
 import CreatableSelect from "react-select/creatable";
 import { useCookies } from "react-cookie";
+import { searchBook } from "./service";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -78,6 +79,11 @@ export default function NavBar(props) {
               className={classes.searchField}
               autoFocus={isFocused}
               options={recentSearchesOptions}
+              onChange={(selectedOption) =>
+                searchBook(selectedOption.value)
+                  .then((res) => console.log(res))
+                  .catch((err) => console.error(err))
+              }
               placeholder=""
               formatCreateLabel={(x) => <>{x}</>}
               isClearable
