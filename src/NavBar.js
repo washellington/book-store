@@ -11,7 +11,7 @@ import logo from "./images/logo.png";
 import CreatableSelect from "react-select/creatable";
 import { useCookies } from "react-cookie";
 import { searchBook } from "./service";
-import { setBooks } from "./actions";
+import { setBooks, setLoading } from "./actions";
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -79,25 +79,28 @@ export default function NavBar(props) {
               className={classes.searchField}
               autoFocus={isFocused}
               options={recentSearchesOptions}
-              onChange={(selectedOption) =>
-                selectedOption &&
-                searchBook(selectedOption.value)
-                  .then((res) => {
-                    //dispatch set books
-                    dispatch(
-                      setBooks(
-                        res.data.items.map((x) => {
-                          return {
-                            imageUrl: x.volumeInfo.imageLinks
-                              ? x.volumeInfo.imageLinks.thumbnail
-                              : "No image available",
-                          };
-                        })
-                      )
-                    );
-                  })
-                  .catch((err) => console.error(err))
-              }
+              onChange={(selectedOption) => {
+                dispatch(setLoading(true));
+                if (selectedOption) {
+                  searchBook(selectedOption.value)
+                    .then((res) => {
+                      //dispatch set books
+                      dispatch(setLoading(false));
+                      dispatch(
+                        setBooks(
+                          res.data.items.map((x) => {
+                            return {
+                              imageUrl: x.volumeInfo.imageLinks
+                                ? x.volumeInfo.imageLinks.thumbnail
+                                : "No image available",
+                            };
+                          })
+                        )
+                      );
+                    })
+                    .catch((err) => console.error(err));
+                }
+              }}
               placeholder=""
               formatCreateLabel={(x) => <>{x}</>}
               isClearable

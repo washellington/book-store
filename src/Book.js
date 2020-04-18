@@ -45,5 +45,9 @@ export default function Book(props) {
   const wishList = useSelector((state) => state.wishList);
   const classes = useStyles();
   const history = useHistory();
-  return <div>{imageUrl}</div>;
+  return (
+    <div>
+      <img src={imageUrl} />
+    </div>
+  );
 }

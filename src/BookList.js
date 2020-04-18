@@ -5,6 +5,8 @@ import { Chip, Button } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import emptyList from "./images/empty_book_list.png";
 import { useHistory } from "react-router";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles((theme) => ({
   emptyList: {
@@ -23,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 27,
     display: "flex",
     alignItems: "center",
+    marginBottom: 15,
   },
   chipCounter: {
     marginLeft: 10,
@@ -37,6 +40,11 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     gridRow: "2/3",
     alignItems: "center",
+  },
+  paper: {
+    height: "35vw",
+    width: "25vw",
+    overflow: "hidden",
   },
 }));
 
@@ -57,7 +65,7 @@ export default function BookList() {
           label={wishList.length}
         />
       </h1>
-      {wishList.length == 0 && (
+      {wishList.length === 0 && (
         <div className={classes.content}>
           <div className={classes.emptyContent}>
             <img
@@ -71,10 +79,18 @@ export default function BookList() {
           </div>
         </div>
       )}
-      {wishList.length > 0 &&
-        wishList.map((x) => {
-          return <Book imageUrl={x.imageUrl} />;
-        })}
+      <Grid container className={classes.root} spacing={2}>
+        {wishList.length > 0 &&
+          wishList.map((x, i) => {
+            return (
+              <Grid key={`book-${i}`} item xs={4}>
+                <Paper className={classes.paper} elevation={3}>
+                  <Book imageUrl={x.imageUrl} />
+                </Paper>
+              </Grid>
+            );
+          })}
+      </Grid>
     </div>
   );
 }

@@ -25,7 +25,7 @@ export default function SearchPage() {
   return (
     <div className={classes.root}>
       <NavBar isFocused={true} />
-      <div className={classes.overlay}>
+      <div className={wishList.length ? "" : classes.overlay}>
         <BookList />
       </div>
     </div>
