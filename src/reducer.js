@@ -9,7 +9,7 @@ export default function bookStore(state = initialState, action) {
     case SET_BOOKS:
       return {
         ...state,
-        wishList: [...action.books],
+        wishList: [...state.wishList, ...action.books],
       };
     default:
       return initialState;

@@ -2,8 +2,6 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import { TextField, useTheme, Box } from "@material-ui/core";
@@ -13,6 +11,8 @@ import logo from "./images/logo.png";
 import CreatableSelect from "react-select/creatable";
 import { useCookies } from "react-cookie";
 import { searchBook } from "./service";
+import { setBooks } from "./actions";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 export default function NavBar(props) {
   const classes = useStyles();
   const { isFocused = false } = props;
-
+  const dispatch = useDispatch();
   const theme = useTheme();
   const [cookies, setCookies, removeCookies] = useCookies(["recentSearches"]);
 
@@ -82,7 +82,20 @@ export default function NavBar(props) {
               onChange={(selectedOption) =>
                 selectedOption &&
                 searchBook(selectedOption.value)
-                  .then((res) => console.log(res))
+                  .then((res) => {
+                    //dispatch set books
+                    dispatch(
+                      setBooks(
+                        res.data.items.map((x) => {
+                          return {
+                            imageUrl: x.volumeInfo.imageLinks
+                              ? x.volumeInfo.imageLinks.thumbnail
+                              : "No image available",
+                          };
+                        })
+                      )
+                    );
+                  })
                   .catch((err) => console.error(err))
               }
               placeholder=""

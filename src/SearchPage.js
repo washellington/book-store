@@ -5,6 +5,7 @@ import NavBar from "./NavBar";
 import { Typography, Chip, Button } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import emptyList from "./images/empty_book_list.png";
+import BookList from "./BookList";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,7 +25,9 @@ export default function SearchPage() {
   return (
     <div className={classes.root}>
       <NavBar isFocused={true} />
-      <div className={classes.overlay}></div>
+      <div className={classes.overlay}>
+        <BookList />
+      </div>
     </div>
   );
 }

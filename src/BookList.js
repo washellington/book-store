@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
-import { Typography, Chip, Button } from "@material-ui/core";
+import Book from "./Book";
+import { Chip, Button } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import emptyList from "./images/empty_book_list.png";
 import { useHistory } from "react-router";
@@ -41,9 +41,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function BookList() {
-  const wishList = useSelector((state) => state.wishList);
+  const wishList = useSelector((state) => {
+    return state.wishList;
+  });
   const classes = useStyles();
   const history = useHistory();
+
   return (
     <div className={classes.appContainer}>
       <h1 className={classes.header1}>
@@ -68,6 +71,10 @@ export default function BookList() {
           </div>
         </div>
       )}
+      {wishList.length > 0 &&
+        wishList.map((x) => {
+          return <Book imageUrl={x.imageUrl} />;
+        })}
     </div>
   );
 }
