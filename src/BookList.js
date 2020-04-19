@@ -2,11 +2,13 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Book from "./Book";
 import { Chip, Button } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import emptyList from "./images/empty_book_list.png";
 import { useHistory } from "react-router";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import BookCard from "./BookCard";
+import { setBook } from "./actions";
 
 const useStyles = makeStyles((theme) => ({
   emptyList: {
@@ -49,11 +51,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function BookList() {
-  const wishList = useSelector((state) => {
-    return state.wishList;
+  const { wishList, selectedBook } = useSelector((state) => {
+    return state;
   });
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
 
   return (
     <div className={classes.appContainer}>
@@ -85,12 +88,27 @@ export default function BookList() {
             return (
               <Grid key={`book-${i}`} item xs={4}>
                 <Paper className={classes.paper} elevation={3}>
-                  <Book imageUrl={x.imageUrl} />
+                  <Book
+                    book={{
+                      title: x.title,
+                      author: x.author,
+                      summary: x.summary,
+                      imageUrl: x.imageUrl,
+                    }}
+                  />
                 </Paper>
               </Grid>
             );
           })}
       </Grid>
+      {selectedBook && (
+        <BookCard
+          onAdd={() => console.log("onAdd")}
+          book={selectedBook}
+          open={selectedBook !== undefined}
+          onClose={() => dispatch(setBook(undefined))}
+        />
+      )}
     </div>
   );
 }

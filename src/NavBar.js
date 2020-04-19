@@ -93,6 +93,11 @@ export default function NavBar(props) {
                               imageUrl: x.volumeInfo.imageLinks
                                 ? x.volumeInfo.imageLinks.thumbnail
                                 : "No image available",
+                              title: x.volumeInfo.title,
+                              author:
+                                x.volumeInfo.authors &&
+                                x.volumeInfo.authors.join(","),
+                              summary: x.volumeInfo.description,
                             };
                           })
                         )

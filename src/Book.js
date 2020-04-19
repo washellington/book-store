@@ -2,9 +2,10 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Chip, Button } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import emptyList from "./images/empty_book_list.png";
 import { useHistory } from "react-router";
+import { setBook } from "./actions";
 
 const useStyles = makeStyles((theme) => ({
   emptyList: {
@@ -41,13 +42,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Book(props) {
-  const { imageUrl } = props;
+  const { book } = props;
   const wishList = useSelector((state) => state.wishList);
   const classes = useStyles();
-  const history = useHistory();
+  const dispatch = useDispatch();
   return (
-    <div>
-      <img src={imageUrl} />
+    <div
+      onClick={() => {
+        dispatch(setBook(book));
+      }}
+    >
+      <img src={book.imageUrl} />
     </div>
   );
 }
