@@ -8,9 +8,14 @@ import { useHistory } from "react-router";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import { usePalette } from "react-palette";
+import { Fab, Paper, Typography } from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
+import ClampLines from "react-clamp-lines";
 
 const useStyles = makeStyles((theme) => ({
-  dialogTitle: {},
+  summary: {
+    padding: "0px 10px",
+  },
   closeButton: {
     position: "absolute",
     right: theme.spacing(1),
@@ -29,6 +34,45 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     zIndex: 1000,
   },
+  imagePaper: {
+    width: "28vw",
+    height: "38vw",
+    overflow: "hidden",
+    "& img": {
+      maxWidth: "100%",
+    },
+  },
+  fab: {
+    alignSelf: "flex-end",
+    width: "14vw",
+    height: "14vw",
+  },
+  bookTitleAuthor: {
+    margin: "0px 10px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    "& h2, & h3": {
+      margin: 0,
+    },
+    "& h2": { fontSize: "1.1em" },
+    "& h3": { fontWeight: "normal" },
+  },
+  dialogContainer: {
+    margin: 0,
+    width: "89vw",
+    padding: "0px 10px",
+  },
+  headerSection: {
+    flex: 1,
+  },
+  fabContainer: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  expandLink: {
+    float: "right",
+  },
 }));
 
 export default function BookCard(props) {
@@ -40,11 +84,16 @@ export default function BookCard(props) {
 
   console.log(book.imageUrl);
   return (
-    <Dialog onClose={onClose} aria-labelledby="simple-dialog-title" open={open}>
+    <Dialog
+      classes={{ paper: classes.dialogContainer }}
+      onClose={onClose}
+      aria-labelledby="simple-dialog-title"
+      open={open}
+    >
       <DialogTitle
         style={{
-          color: data.lightMuted,
-          backgroundColor: data.darkMuted,
+          color: data.vibrant,
+          backgroundColor: data.lightMuted,
           zIndex: 1000,
         }}
         id="simple-dialog-title"
@@ -61,17 +110,64 @@ export default function BookCard(props) {
         className={classes.colorSwatch}
         style={{
           color: data.vibrant,
-          backgroundColor: data.darkMuted,
+          backgroundColor: data.lightMuted,
         }}
       ></div>
-      <div className={classes.bookHeader}>
-        <img src={book.imageUrl} />
-        <div>
-          <h2>{book.title}</h2>
-          <h3>{book.author}</h3>
+      <div className={`${classes.bookHeader} ${classes.headerSection}`}>
+        <Paper
+          elevation={6}
+          style={{
+            backgroundColor: data.lightMuted,
+          }}
+          className={classes.imagePaper}
+        >
+          <img src={book.imageUrl} />
+        </Paper>
+        <div className={`${classes.bookTitleAuthor} ${classes.headerSection}`}>
+          <ClampLines
+            text={book.title}
+            id="title-clamp-id"
+            ellipsis="..."
+            moreText="Expand"
+            lessText="Collapse"
+            className="clampLinesSummary"
+            innerElement="h2"
+          />
+          <ClampLines
+            text={book.author}
+            id="author-clamp-id"
+            ellipsis="..."
+            moreText="Expand"
+            lessText="Collapse"
+            className="clampLinesSummary"
+            innerElement="h3"
+          />
+          <Fab color="secondary" className={classes.fab}>
+            <AddIcon />
+          </Fab>
         </div>
       </div>
-      <p>{book.summary}</p>
+      <div>
+        <ClampLines
+          className={classes.summary}
+          text={book.summary}
+          id="summary-clamp-id"
+          lines={4}
+          ellipsis="..."
+          moreText="Expand"
+          lessText="Collapse"
+          className="clampLinesSummary"
+          innerElement="p"
+          buttons={false}
+        />
+        <Typography
+          color="secondary"
+          className={classes.expandLink}
+          variant="button"
+        >
+          EXPAND
+        </Typography>
+      </div>
     </Dialog>
   );
 }
