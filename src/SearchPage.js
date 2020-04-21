@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     backgroundColor: theme.palette.action.disabled,
   },
+  wishList: {
+    paddingTop: "120px",
+  },
 }));
 
 export default function SearchPage() {
@@ -25,7 +28,7 @@ export default function SearchPage() {
   return (
     <div className={classes.root}>
       <NavBar isFocused={true} />
-      <div className={wishList.length ? "" : classes.overlay}>
+      <div className={wishList.length ? classes.wishList : classes.overlay}>
         <BookList />
       </div>
     </div>

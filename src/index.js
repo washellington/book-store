@@ -13,6 +13,7 @@ import { colorPalette } from "./theme";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import SearchPage from "./SearchPage";
+import BookPage from "./BookPage";
 import { CookiesProvider } from "react-cookie";
 
 const middlewareEnhancer = applyMiddleware(loggerMiddleware, thunkMiddleware);
@@ -31,6 +32,7 @@ ReactDOM.render(
           <Switch>
             <Route exact path="/" component={App} />
             <Route exact path="/search" component={SearchPage} />
+            <Route exact path="/book" component={BookPage} />
           </Switch>
         </BrowserRouter>
       </CookiesProvider>

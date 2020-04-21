@@ -11,8 +11,9 @@ import logo from "./images/logo.png";
 import CreatableSelect from "react-select/creatable";
 import { useCookies } from "react-cookie";
 import { searchBook } from "./service";
-import { setBooks, setLoading } from "./actions";
-import { useDispatch } from "react-redux";
+import { setBooks, setLoading, setSearchText, setBook } from "./actions";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -49,82 +50,85 @@ export default function NavBar(props) {
   const classes = useStyles();
   const { isFocused = false } = props;
   const dispatch = useDispatch();
+  const history = useHistory();
   const theme = useTheme();
   const [cookies, setCookies, removeCookies] = useCookies(["recentSearches"]);
-
+  const searchText = useSelector((state) => state.searchText);
   const recentSearchesOptions = (cookies.recentSearches || []).map((x) => ({
     label: x,
     value: x,
   }));
   return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            style={{ color: theme.palette.common.white }}
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
-          <div className={classes.logoContainer}>
-            <img style={{ width: "3em" }} src={logo} alt="logo" />
-          </div>
-          <div className={classes.emptyElement} />
-        </Toolbar>
-        <Toolbar className={classes.searchFieldContainer}>
-          <Box boxShadow={3}>
-            <CreatableSelect
-              className={classes.searchField}
-              autoFocus={isFocused}
-              options={recentSearchesOptions}
-              onChange={(selectedOption) => {
+    <AppBar position="fixed">
+      <Toolbar>
+        <IconButton
+          edge="start"
+          className={classes.menuButton}
+          style={{ color: theme.palette.common.white }}
+          aria-label="menu"
+        >
+          <MenuIcon />
+        </IconButton>
+        <div className={classes.logoContainer}>
+          <img style={{ width: "3em" }} src={logo} alt="logo" />
+        </div>
+        <div className={classes.emptyElement} />
+      </Toolbar>
+      <Toolbar className={classes.searchFieldContainer}>
+        <Box boxShadow={3}>
+          <CreatableSelect
+            className={classes.searchField}
+            autoFocus={isFocused}
+            value={searchText}
+            options={recentSearchesOptions}
+            onChange={(selectedOption) => {
+              if (selectedOption) {
+                dispatch(setSearchText(selectedOption.values));
+                dispatch(setBook(undefined));
+                history.push("/search");
                 dispatch(setLoading(true));
-                if (selectedOption) {
-                  searchBook(selectedOption.value)
-                    .then((res) => {
-                      //dispatch set books
-                      dispatch(setLoading(false));
-                      dispatch(
-                        setBooks(
-                          res.data.items.map((x) => {
-                            return {
-                              imageUrl: x.volumeInfo.imageLinks
-                                ? x.volumeInfo.imageLinks.thumbnail
-                                : "No image available",
-                              title: x.volumeInfo.title,
-                              author:
-                                x.volumeInfo.authors &&
-                                x.volumeInfo.authors.join(","),
-                              summary: x.volumeInfo.description,
-                            };
-                          })
-                        )
-                      );
-                    })
-                    .catch((err) => console.error(err));
-                }
-              }}
-              placeholder=""
-              formatCreateLabel={(x) => <>{x}</>}
-              isClearable
-              onCreateOption={(x) => {
-                let cookieValues = cookies.recentSearches || [];
-                setCookies("recentSearches", [...cookieValues, x]);
-              }}
-              noOptionsMessage={() => <>No recent search results</>}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Box>
-        </Toolbar>
-      </AppBar>
-    </div>
+                searchBook(selectedOption.value)
+                  .then((res) => {
+                    //dispatch set books
+                    dispatch(setLoading(false));
+                    dispatch(
+                      setBooks(
+                        res.data.items.map((x) => {
+                          return {
+                            imageUrl: x.volumeInfo.imageLinks
+                              ? x.volumeInfo.imageLinks.thumbnail
+                              : "No image available",
+                            title: x.volumeInfo.title,
+                            author:
+                              x.volumeInfo.authors &&
+                              x.volumeInfo.authors.join(","),
+                            summary: x.volumeInfo.description,
+                          };
+                        })
+                      )
+                    );
+                  })
+                  .catch((err) => console.error(err));
+              }
+            }}
+            placeholder=""
+            formatCreateLabel={(x) => <>{x}</>}
+            isClearable
+            onCreateOption={(x) => {
+              let cookieValues = cookies.recentSearches || [];
+              setCookies("recentSearches", [...cookieValues, x]);
+            }}
+            noOptionsMessage={() => <>No recent search results</>}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 }

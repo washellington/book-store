@@ -8,7 +8,7 @@ import { useHistory } from "react-router";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import { usePalette } from "react-palette";
-import { Fab, Paper, Typography } from "@material-ui/core";
+import { Fab, Paper, Typography, useTheme, Button } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import ClampLines from "react-clamp-lines";
 
@@ -80,9 +80,9 @@ export default function BookCard(props) {
   const wishList = useSelector((state) => state.wishList);
   const classes = useStyles();
   const history = useHistory();
+  const theme = useTheme();
   const { data, loading, error } = usePalette(book.imageUrl);
 
-  console.log(book.imageUrl);
   return (
     <Dialog
       classes={{ paper: classes.dialogContainer }}
@@ -102,6 +102,7 @@ export default function BookCard(props) {
           aria-label="close"
           className={classes.closeButton}
           onClick={onClose}
+          style={{ color: theme.palette.text.primary }}
         >
           <CloseIcon />
         </IconButton>
@@ -160,13 +161,15 @@ export default function BookCard(props) {
           innerElement="p"
           buttons={false}
         />
-        <Typography
+        <Button
+          onClick={() => {
+            history.push("/book");
+          }}
           color="secondary"
           className={classes.expandLink}
-          variant="button"
         >
           EXPAND
-        </Typography>
+        </Button>
       </div>
     </Dialog>
   );

@@ -4,6 +4,14 @@ export const SET_BOOKS = "SET_BOOKS";
 export const SET_BOOK = "SET_BOOK";
 export const SET_LOADING = "SET_LOADING";
 export const SET_SEARCH_RESULTS = "SET_SEARCH_RESULTS";
+export const SET_SEARCH_TEXT = "SET_SEARCH_TEXT";
+
+export const setSearchText = (text) => {
+  return {
+    type: SET_SEARCH_TEXT,
+    text,
+  };
+};
 
 export const setLoading = (loading) => {
   return {

@@ -3,6 +3,7 @@ import {
   SET_BOOK,
   SET_SEARCH_RESULTS,
   SET_LOADING,
+  SET_SEARCH_TEXT,
 } from "./actions";
 
 const initialState = {
@@ -10,10 +11,16 @@ const initialState = {
   searchResults: [],
   loading: false,
   selectedBook: undefined,
+  searchText: "",
 };
 
 export default function bookStore(state = initialState, action) {
   switch (action.type) {
+    case SET_SEARCH_TEXT:
+      return {
+        ...state,
+        searchText: action.text,
+      };
     case SET_BOOK:
       return {
         ...state,
