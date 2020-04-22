@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 10,
   },
   bookInfo: {
-    paddingTop: "120px",
+    paddingTop: "112px",
   },
 }));
 

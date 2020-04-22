@@ -79,11 +79,15 @@ export default function NavBar(props) {
           <CreatableSelect
             className={classes.searchField}
             autoFocus={isFocused}
-            value={searchText}
+            value={{ label: searchText, value: searchText }}
             options={recentSearchesOptions}
             onChange={(selectedOption) => {
+              console.log(selectedOption);
+              dispatch(
+                setSearchText(selectedOption ? selectedOption.value : "")
+              );
+
               if (selectedOption) {
-                dispatch(setSearchText(selectedOption.values));
                 dispatch(setBook(undefined));
                 history.push("/search");
                 dispatch(setLoading(true));

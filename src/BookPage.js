@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Palette from "react-palette";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -20,6 +20,9 @@ export default function BookPage() {
   const classes = useStyles();
   const book = useSelector((state) => state.selectedBook);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
   return (
     <div>
       <NavBar />

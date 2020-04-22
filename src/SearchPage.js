@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.action.disabled,
   },
   wishList: {
-    paddingTop: "120px",
+    paddingTop: "112px",
   },
 }));
 
