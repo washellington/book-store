@@ -5,7 +5,26 @@ export const SET_BOOK = "SET_BOOK";
 export const SET_LOADING = "SET_LOADING";
 export const SET_SEARCH_RESULTS = "SET_SEARCH_RESULTS";
 export const SET_SEARCH_TEXT = "SET_SEARCH_TEXT";
+export const SET_SEARCH_INDEX = "SET_SEARCH_INDEX";
+export const SET_SEARCH = "SET_SEARCH";
 
+export const setSearch = (searchIndex, searchTerm, totalNumOfResults) => {
+  return {
+    type: SET_SEARCH,
+    search: {
+      searchIndex,
+      searchTerm,
+      totalNumOfResults,
+    },
+  };
+};
+
+export const setSearchIndex = (index) => {
+  return {
+    type: SET_SEARCH_INDEX,
+    index,
+  };
+};
 export const setSearchText = (text) => {
   return {
     type: SET_SEARCH_TEXT,

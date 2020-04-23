@@ -11,7 +11,14 @@ import logo from "./images/logo.png";
 import CreatableSelect from "react-select/creatable";
 import { useCookies } from "react-cookie";
 import { searchBook } from "./service";
-import { setBooks, setLoading, setSearchText, setBook } from "./actions";
+import {
+  setBooks,
+  setLoading,
+  setSearchText,
+  setBook,
+  setSearch,
+  setSearchResults,
+} from "./actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
@@ -53,7 +60,7 @@ export default function NavBar(props) {
   const history = useHistory();
   const theme = useTheme();
   const [cookies, setCookies, removeCookies] = useCookies(["recentSearches"]);
-  const searchText = useSelector((state) => state.searchText);
+  const { searchText, searchIndex = 0 } = useSelector((state) => state);
   const recentSearchesOptions = (cookies.recentSearches || []).map((x) => ({
     label: x,
     value: x,
@@ -91,12 +98,19 @@ export default function NavBar(props) {
                 dispatch(setBook(undefined));
                 history.push("/search");
                 dispatch(setLoading(true));
-                searchBook(selectedOption.value)
+                searchBook(selectedOption.value, searchIndex)
                   .then((res) => {
                     //dispatch set books
                     dispatch(setLoading(false));
                     dispatch(
-                      setBooks(
+                      setSearch(
+                        searchIndex,
+                        selectedOption.value,
+                        res.data.totalItems
+                      )
+                    );
+                    dispatch(
+                      setSearchResults(
                         res.data.items.map((x) => {
                           return {
                             imageUrl: x.volumeInfo.imageLinks

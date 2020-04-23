@@ -3,8 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Book from "./Book";
 import { Chip, Button } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
-import emptyList from "./images/empty_book_list.png";
-import { useHistory } from "react-router";
+
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import BookCard from "./BookCard";
@@ -23,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     opacity: ".1",
   },
   appContainer: {
-    padding: "0 10px",
+    padding: "8px 10px",
     flex: 1,
     display: "flex",
     flexDirection: "column",
@@ -46,35 +45,60 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function BookList(props) {
-  const { selectedBook } = useSelector((state) => {
+export default function BookSearchList() {
+  const {
+    searchResults,
+    searchIndex,
+    totalSearchResults,
+    searchText,
+  } = useSelector((state) => {
     return state;
   });
 
-  const { books } = props;
   const classes = useStyles();
-  const history = useHistory();
   const dispatch = useDispatch();
+
+  const loadSearchResults = (page) => {
+    searchBook(searchText, page)
+      .then((res) => {
+        dispatch(setSearch(page, searchText, res.data.totalItems));
+        dispatch(
+          setSearchResults(
+            res.data.items.map((x) => {
+              return {
+                imageUrl: x.volumeInfo.imageLinks
+                  ? x.volumeInfo.imageLinks.thumbnail
+                  : "No image available",
+                title: x.volumeInfo.title,
+                author: x.volumeInfo.authors && x.volumeInfo.authors.join(","),
+                summary: x.volumeInfo.description,
+              };
+            })
+          )
+        );
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const searchResultsHasMore = () => totalSearchResults > searchIndex * 10;
 
   return (
     <div className={classes.appContainer}>
-      {books.length === 0 && (
-        <div className={classes.content}>
-          <div className={classes.emptyContent}>
-            <img
-              style={{ opacity: ".1" }}
-              src={emptyList}
-              alt="Empty wish list"
-            />
-            <Button onClick={() => history.push("/search")} color="secondary">
-              Add book
-            </Button>
+      <InfiniteScroll
+        element={"div"}
+        className={"MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-4"}
+        pageStart={0}
+        loadMore={loadSearchResults}
+        //search results has more if the total number of results(page * number of results displayed) shown in less then the total number of itmes
+        hasMore={searchResultsHasMore}
+        loader={
+          <div className="loader" key={0}>
+            Loading ...
           </div>
-        </div>
-      )}
-      <Grid spacing={2}>
-        {books.length > 0 &&
-          books.map((x, i) => {
+        }
+      >
+        {searchResults.length > 0 &&
+          searchResults.map((x, i) => {
             return (
               <Grid key={`book-${i}`} item xs={4}>
                 <Paper className={classes.paper} elevation={3}>
@@ -90,7 +114,7 @@ export default function BookList(props) {
               </Grid>
             );
           })}
-      </Grid>
+      </InfiniteScroll>
     </div>
   );
 }

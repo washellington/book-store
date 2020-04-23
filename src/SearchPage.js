@@ -1,11 +1,10 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import NavBar from "./NavBar";
-
-import { Typography, Chip, Button } from "@material-ui/core";
-import { useSelector } from "react-redux";
-import emptyList from "./images/empty_book_list.png";
-import BookList from "./BookList";
+import { useSelector, useDispatch } from "react-redux";
+import BookSearchList from "./BookSearchList";
+import { setBook } from "./actions";
+import BookCard from "./BookCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,15 +21,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SearchPage() {
-  const wishList = useSelector((state) => state.wishList);
+  const { searchResults, selectedBook } = useSelector((state) => state);
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   return (
     <div className={classes.root}>
       <NavBar isFocused={true} />
-      <div className={wishList.length ? classes.wishList : classes.overlay}>
-        <BookList />
+      <div
+        className={searchResults.length ? classes.wishList : classes.overlay}
+      >
+        <BookSearchList />
       </div>
+      {selectedBook && (
+        <BookCard
+          onAdd={() => console.log("onAdd")}
+          book={selectedBook}
+          open={selectedBook !== undefined}
+          onClose={() => dispatch(setBook(undefined))}
+        />
+      )}
     </div>
   );
 }
