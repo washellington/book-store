@@ -4,7 +4,16 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import { TextField, useTheme, Box } from "@material-ui/core";
+import {
+  TextField,
+  useTheme,
+  List,
+  Box,
+  Drawer,
+  ListItem,
+  ListItemText,
+  Typography,
+} from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import logo from "./images/logo.png";
@@ -51,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
   emptyElement: {
     flex: 1,
   },
+  drawerContainer: {
+    width: "40vw",
+  },
 }));
 
 export default function NavBar(props) {
@@ -65,88 +77,108 @@ export default function NavBar(props) {
     label: x,
     value: x,
   }));
+  const [open, setOpen] = React.useState(false);
   return (
-    <AppBar position="fixed">
-      <Toolbar>
-        <IconButton
-          edge="start"
-          className={classes.menuButton}
-          style={{ color: theme.palette.common.white }}
-          aria-label="menu"
-        >
-          <MenuIcon />
-        </IconButton>
-        <div className={classes.logoContainer}>
-          <img style={{ width: "3em" }} src={logo} alt="logo" />
-        </div>
-        <div className={classes.emptyElement} />
-      </Toolbar>
-      <Toolbar className={classes.searchFieldContainer}>
-        <Box boxShadow={3}>
-          <CreatableSelect
-            className={classes.searchField}
-            autoFocus={isFocused}
-            value={{ label: searchText, value: searchText }}
-            options={recentSearchesOptions}
-            onChange={(selectedOption) => {
-              console.log(selectedOption);
-              dispatch(
-                setSearchText(selectedOption ? selectedOption.value : "")
-              );
+    <>
+      <AppBar position="fixed">
+        <Toolbar>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            style={{ color: theme.palette.common.white }}
+            aria-label="menu"
+            onClick={() => setOpen(true)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <div className={classes.logoContainer}>
+            <img style={{ width: "3em" }} src={logo} alt="logo" />
+          </div>
+          <div className={classes.emptyElement} />
+        </Toolbar>
+        <Toolbar className={classes.searchFieldContainer}>
+          <Box boxShadow={3}>
+            <CreatableSelect
+              className={classes.searchField}
+              autoFocus={isFocused}
+              value={{ label: searchText, value: searchText }}
+              options={recentSearchesOptions}
+              onChange={(selectedOption) => {
+                console.log(selectedOption);
+                dispatch(
+                  setSearchText(selectedOption ? selectedOption.value : "")
+                );
 
-              if (selectedOption) {
-                dispatch(setBook(undefined));
-                history.push("/search");
-                dispatch(setLoading(true));
-                searchBook(selectedOption.value, searchIndex)
-                  .then((res) => {
-                    //dispatch set books
-                    dispatch(setLoading(false));
-                    dispatch(
-                      setSearch(
-                        searchIndex,
-                        selectedOption.value,
-                        res.data.totalItems
-                      )
-                    );
-                    dispatch(
-                      setSearchResults(
-                        res.data.items.map((x) => {
-                          return {
-                            imageUrl: x.volumeInfo.imageLinks
-                              ? x.volumeInfo.imageLinks.thumbnail
-                              : "No image available",
-                            title: x.volumeInfo.title,
-                            author:
-                              x.volumeInfo.authors &&
-                              x.volumeInfo.authors.join(","),
-                            summary: x.volumeInfo.description,
-                          };
-                        })
-                      )
-                    );
-                  })
-                  .catch((err) => console.error(err));
-              }
-            }}
-            placeholder=""
-            formatCreateLabel={(x) => <>{x}</>}
-            isClearable
-            onCreateOption={(x) => {
-              let cookieValues = cookies.recentSearches || [];
-              setCookies("recentSearches", [...cookieValues, x]);
-            }}
-            noOptionsMessage={() => <>No recent search results</>}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Box>
-      </Toolbar>
-    </AppBar>
+                if (selectedOption) {
+                  dispatch(setBook(undefined));
+                  history.push("/search");
+                  dispatch(setLoading(true));
+                  searchBook(selectedOption.value, searchIndex)
+                    .then((res) => {
+                      //dispatch set books
+                      dispatch(setLoading(false));
+                      dispatch(
+                        setSearch(
+                          searchIndex,
+                          selectedOption.value,
+                          res.data.totalItems
+                        )
+                      );
+                      dispatch(
+                        setSearchResults(
+                          res.data.items.map((x) => {
+                            return {
+                              imageUrl: x.volumeInfo.imageLinks
+                                ? x.volumeInfo.imageLinks.thumbnail
+                                : "No image available",
+                              title: x.volumeInfo.title,
+                              author:
+                                x.volumeInfo.authors &&
+                                x.volumeInfo.authors.join(","),
+                              summary: x.volumeInfo.description,
+                            };
+                          })
+                        )
+                      );
+                    })
+                    .catch((err) => console.error(err));
+                }
+              }}
+              placeholder=""
+              formatCreateLabel={(x) => <>{x}</>}
+              isClearable
+              onCreateOption={(x) => {
+                let cookieValues = cookies.recentSearches || [];
+                setCookies("recentSearches", [...cookieValues, x]);
+              }}
+              noOptionsMessage={() => <>No recent search results</>}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <Drawer open={open} onClose={() => setOpen(false)}>
+        <div className={classes.drawerContainer}>
+          <List>
+            <ListItem button onClick={() => history.push("/")}>
+              <ListItemText>
+                <Typography color="secondary">Home</Typography>
+              </ListItemText>
+            </ListItem>
+            <ListItem button onClick={() => history.push("/search")}>
+              <ListItemText>
+                <Typography color="secondary">Search</Typography>
+              </ListItemText>
+            </ListItem>
+          </List>
+        </div>
+      </Drawer>
+    </>
   );
 }

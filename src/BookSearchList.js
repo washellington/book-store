@@ -15,7 +15,7 @@ import {
   setSearchResults,
 } from "./actions";
 import InfiniteScroll from "react-infinite-scroller";
-import { searchBook } from "./service";
+import { searchBook, MAX_RESULTS } from "./service";
 
 const useStyles = makeStyles((theme) => ({
   emptyList: {
@@ -45,6 +45,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+export const NO_IMAGE_AVAILABLE = "No image available";
+
 export default function BookSearchList() {
   const {
     searchResults,
@@ -66,9 +68,10 @@ export default function BookSearchList() {
           setSearchResults(
             res.data.items.map((x) => {
               return {
+                id: x.id,
                 imageUrl: x.volumeInfo.imageLinks
                   ? x.volumeInfo.imageLinks.thumbnail
-                  : "No image available",
+                  : NO_IMAGE_AVAILABLE,
                 title: x.volumeInfo.title,
                 author: x.volumeInfo.authors && x.volumeInfo.authors.join(","),
                 summary: x.volumeInfo.description,
@@ -80,7 +83,8 @@ export default function BookSearchList() {
       .catch((err) => console.error(err));
   };
 
-  const searchResultsHasMore = () => totalSearchResults > searchIndex * 10;
+  const searchResultsHasMore = () =>
+    totalSearchResults > searchIndex * MAX_RESULTS;
 
   return (
     <div className={classes.appContainer}>
@@ -104,10 +108,7 @@ export default function BookSearchList() {
                 <Paper className={classes.paper} elevation={3}>
                   <Book
                     book={{
-                      title: x.title,
-                      author: x.author,
-                      summary: x.summary,
-                      imageUrl: x.imageUrl,
+                      ...x,
                     }}
                   />
                 </Paper>

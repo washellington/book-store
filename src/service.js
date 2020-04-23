@@ -7,6 +7,8 @@ export const api = axios.create({
   responseType: "json",
 });
 
+export const MAX_RESULTS = 12;
+
 const BOOK_SEARCH = "books/v1/volumes";
 
 export const searchBook = (searchText, startIndex) => {
@@ -14,7 +16,7 @@ export const searchBook = (searchText, startIndex) => {
     params: {
       q: searchText,
       startIndex: startIndex,
-      maxResults: 10,
+      maxResults: MAX_RESULTS,
       filter: "ebooks",
       key: process.env.REACT_APP_GOOGLE_BOOKS_API_KEY,
     },

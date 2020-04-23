@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import NavBar from "./NavBar";
 import { useSelector, useDispatch } from "react-redux";
 import BookSearchList from "./BookSearchList";
-import { setBook } from "./actions";
+import { setBook, setBooks, removeBook } from "./actions";
 import BookCard from "./BookCard";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +35,12 @@ export default function SearchPage() {
       </div>
       {selectedBook && (
         <BookCard
-          onAdd={() => console.log("onAdd")}
+          onAdd={() => {
+            dispatch(setBooks([selectedBook]));
+          }}
+          onRemove={() => {
+            dispatch(removeBook(selectedBook));
+          }}
           book={selectedBook}
           open={selectedBook !== undefined}
           onClose={() => dispatch(setBook(undefined))}

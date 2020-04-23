@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Palette from "react-palette";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
 import { useSelector } from "react-redux";
@@ -8,8 +7,9 @@ import { useHistory } from "react-router";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import { usePalette } from "react-palette";
-import { Fab, Paper, Typography, useTheme, Button } from "@material-ui/core";
+import { Fab, Paper, useTheme, Button } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from "@material-ui/icons/Remove";
 import ClampLines from "react-clamp-lines";
 
 const useStyles = makeStyles((theme) => ({
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function BookCard(props) {
-  const { onAdd, book, open, onClose } = props;
+  const { onAdd, book, open, onClose, onRemove } = props;
   const wishList = useSelector((state) => state.wishList);
   const classes = useStyles();
   const history = useHistory();
@@ -143,8 +143,20 @@ export default function BookCard(props) {
             className="clampLinesSummary"
             innerElement="h3"
           />
-          <Fab color="secondary" className={classes.fab}>
-            <AddIcon />
+          <Fab
+            onClick={() => {
+              wishList.find((x) => x.id === book.id) === undefined
+                ? onAdd()
+                : onRemove();
+            }}
+            color="secondary"
+            className={classes.fab}
+          >
+            {wishList.find((x) => x.id === book.id) === undefined ? (
+              <AddIcon />
+            ) : (
+              <RemoveIcon />
+            )}
           </Fab>
         </div>
       </div>

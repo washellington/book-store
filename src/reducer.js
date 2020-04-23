@@ -6,6 +6,7 @@ import {
   SET_SEARCH_TEXT,
   SET_SEARCH_INDEX,
   SET_SEARCH,
+  REMOVE_BOOK,
 } from "./actions";
 
 const initialState = {
@@ -20,6 +21,11 @@ const initialState = {
 
 export default function bookStore(state = initialState, action) {
   switch (action.type) {
+    case REMOVE_BOOK:
+      return {
+        ...state,
+        wishList: state.wishList.filter((x) => x.id !== action.book.id),
+      };
     case SET_SEARCH:
       return {
         ...state,

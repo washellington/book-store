@@ -7,6 +7,14 @@ export const SET_SEARCH_RESULTS = "SET_SEARCH_RESULTS";
 export const SET_SEARCH_TEXT = "SET_SEARCH_TEXT";
 export const SET_SEARCH_INDEX = "SET_SEARCH_INDEX";
 export const SET_SEARCH = "SET_SEARCH";
+export const REMOVE_BOOK = "REMOVE_BOOK";
+
+export const removeBook = (book) => {
+  return {
+    type: REMOVE_BOOK,
+    book,
+  };
+};
 
 export const setSearch = (searchIndex, searchTerm, totalNumOfResults) => {
   return {
