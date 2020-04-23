@@ -7,6 +7,7 @@ import {
   SET_SEARCH_INDEX,
   SET_SEARCH,
   REMOVE_BOOK,
+  RESET_SEARCH_RESULTS,
 } from "./actions";
 
 const initialState = {
@@ -32,6 +33,11 @@ export default function bookStore(state = initialState, action) {
         searchIndex: action.search.searchIndex,
         searchText: action.search.searchTerm,
         totalSearchResults: action.search.totalNumOfResults,
+      };
+    case RESET_SEARCH_RESULTS:
+      return {
+        ...state,
+        searchResults: [],
       };
     case SET_SEARCH_INDEX:
       return {

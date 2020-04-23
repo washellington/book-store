@@ -8,6 +8,13 @@ export const SET_SEARCH_TEXT = "SET_SEARCH_TEXT";
 export const SET_SEARCH_INDEX = "SET_SEARCH_INDEX";
 export const SET_SEARCH = "SET_SEARCH";
 export const REMOVE_BOOK = "REMOVE_BOOK";
+export const RESET_SEARCH_RESULTS = "RESET_SEARCH_RESULTS";
+
+export const resetSearchResults = () => {
+  return {
+    type: RESET_SEARCH_RESULTS,
+  };
+};
 
 export const removeBook = (book) => {
   return {

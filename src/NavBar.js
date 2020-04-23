@@ -27,6 +27,7 @@ import {
   setBook,
   setSearch,
   setSearchResults,
+  resetSearchResults,
 } from "./actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
@@ -110,6 +111,7 @@ export default function NavBar(props) {
                 );
 
                 if (selectedOption) {
+                  dispatch(resetSearchResults());
                   dispatch(setBook(undefined));
                   history.push("/search");
                   dispatch(setLoading(true));
