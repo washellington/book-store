@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import NavBar from "./NavBar";
 import { useSelector, useDispatch } from "react-redux";
@@ -6,6 +6,7 @@ import BookSearchList from "./BookSearchList";
 import { setBook, setBooks, removeBook } from "./actions";
 import BookCard from "./BookCard";
 import { useCookies } from "react-cookie";
+import Palette from "react-palette";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,6 +27,10 @@ export default function SearchPage() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [cookies, setCookies, removeCookies] = useCookies(["wishList"]);
+
+  useEffect(() => {
+    dispatch(setBook(undefined));
+  }, []);
 
   return (
     <div className={classes.root}>
