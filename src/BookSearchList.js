@@ -60,24 +60,25 @@ export default function BookSearchList() {
   }, [searchResults == 0]);
 
   const loadSearchResults = (page) => {
-    searchBook(searchText, page - 1)
-      .then((res) => {
-        console.log(searchText);
-        dispatch(setSearch(searchText, res.data.totalItems));
-        dispatch(
-          setSearchResults(
-            res.data.items.map((x) => {
-              return {
-                id: x.id,
-                imageUrl: x.volumeInfo.imageLinks
-                  ? x.volumeInfo.imageLinks.thumbnail
-                  : NO_IMAGE_AVAILABLE,
-              };
-            })
-          )
-        );
-      })
-      .catch((err) => console.error(err));
+    searchText &&
+      searchBook(searchText, page - 1)
+        .then((res) => {
+          console.log(searchText);
+          dispatch(setSearch(searchText, res.data.totalItems));
+          dispatch(
+            setSearchResults(
+              res.data.items.map((x) => {
+                return {
+                  id: x.id,
+                  imageUrl: x.volumeInfo.imageLinks
+                    ? x.volumeInfo.imageLinks.thumbnail
+                    : NO_IMAGE_AVAILABLE,
+                };
+              })
+            )
+          );
+        })
+        .catch((err) => console.error(err));
   };
 
   const searchResultsHasMore = () => totalSearchResults > searchResults.length;

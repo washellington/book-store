@@ -22,6 +22,7 @@ export default function Book(props) {
   return (
     <div
       onClick={() => {
+        console.log(book);
         searchVolume(book.id)
           .then((res) => {
             book.summary = res.data.volumeInfo.description;

@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import emptyList from "./images/empty_book_list.png";
 import { useHistory } from "react-router";
 import { useCookies } from "react-cookie";
-import { setSearchText } from "./actions";
+import { setSearchText, setBook } from "./actions";
 const useStyles = makeStyles((theme) => ({
   app: {
     display: "flex",
@@ -37,15 +37,17 @@ function App() {
   const history = useHistory();
   const [cookies, setCookies, removeCookies] = useCookies(["wishList"]);
 
-  const { wishList, searchText } = useSelector((state) => {
+  const { searchText } = useSelector((state) => {
     return state;
   });
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(setSearchText(""));
+    dispatch(setBook(undefined));
   }, []);
 
+  console.log("wishlist", cookies.wishList);
   return (
     <div className={classes.app}>
       <NavBar />

@@ -7,6 +7,9 @@ import emptyList from "./images/empty_book_list.png";
 import { useHistory } from "react-router";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import BookCard from "./BookCard";
+import { useCookies } from "react-cookie";
+import { setBook } from "./actions";
 
 const useStyles = makeStyles((theme) => ({
   emptyList: {
@@ -45,6 +48,7 @@ export default function BookList(props) {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
+  const [cookies, setCookies, removeCookies] = useCookies();
 
   return (
     <div className={classes.appContainer}>
@@ -70,9 +74,7 @@ export default function BookList(props) {
                 <Paper className={classes.paper} elevation={3}>
                   <Book
                     book={{
-                      title: x.title,
-                      author: x.author,
-                      summary: x.summary,
+                      id: x.id,
                       imageUrl: x.imageUrl,
                     }}
                   />
@@ -81,6 +83,32 @@ export default function BookList(props) {
             );
           })}
       </Grid>
+      {selectedBook && (
+        <BookCard
+          onAdd={() => {
+            let cookieValues = cookies.wishList || [];
+
+            setCookies("wishList", [
+              ...cookieValues,
+              {
+                imageUrl: selectedBook.imageUrl,
+                id: selectedBook.id,
+              },
+            ]);
+          }}
+          onRemove={() => {
+            let cookieValues = cookies.wishList || [];
+
+            setCookies(
+              "wishList",
+              cookieValues.filter((x) => x.id !== selectedBook.id)
+            );
+          }}
+          book={selectedBook}
+          open={selectedBook !== undefined}
+          onClose={() => dispatch(setBook(undefined))}
+        />
+      )}
     </div>
   );
 }
