@@ -8,6 +8,7 @@ import { Chip, Button } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import emptyList from "./images/empty_book_list.png";
 import { useHistory } from "react-router";
+import { useCookies } from "react-cookie";
 const useStyles = makeStyles((theme) => ({
   app: {
     display: "flex",
@@ -33,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles();
   const history = useHistory();
+  const [cookies, setCookies, removeCookies] = useCookies(["wishList"]);
 
   const { wishList } = useSelector((state) => {
     return state;
@@ -47,10 +49,10 @@ function App() {
           <Chip
             className={classes.chipCounter}
             color="secondary"
-            label={wishList.length}
+            label={cookies.wishList.length}
           />
         </h1>
-        <BookList books={wishList} />
+        <BookList books={cookies.wishList || []} />
       </div>
     </div>
   );

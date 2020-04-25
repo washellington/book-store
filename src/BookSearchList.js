@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Book from "./Book";
 import { Chip, Button } from "@material-ui/core";
@@ -7,13 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import BookCard from "./BookCard";
-import {
-  setBook,
-  setSearchIndex,
-  setLoading,
-  setSearch,
-  setSearchResults,
-} from "./actions";
+import { setSearch, setSearchResults } from "./actions";
 import InfiniteScroll from "react-infinite-scroller";
 import { searchBook, MAX_RESULTS } from "./service";
 
@@ -48,22 +42,28 @@ const useStyles = makeStyles((theme) => ({
 export const NO_IMAGE_AVAILABLE = "No image available";
 
 export default function BookSearchList() {
-  const {
-    searchResults,
-    searchIndex,
-    totalSearchResults,
-    searchText,
-  } = useSelector((state) => {
-    return state;
-  });
+  const { searchResults, totalSearchResults, searchText } = useSelector(
+    (state) => {
+      return state;
+    }
+  );
 
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const infiniteScrollRef = React.createRef();
+  const [scrollPage, setScrollPage] = React.useState(0);
+
+  useEffect(() => {
+    console.log("new search");
+    if (infiniteScrollRef) infiniteScrollRef.current.pageLoaded = 0;
+  }, [searchResults == 0]);
+
   const loadSearchResults = (page) => {
-    searchBook(searchText, page)
+    searchBook(searchText, page - 1)
       .then((res) => {
-        dispatch(setSearch(page, searchText, res.data.totalItems));
+        console.log(searchText);
+        dispatch(setSearch(searchText, res.data.totalItems));
         dispatch(
           setSearchResults(
             res.data.items.map((x) => {
@@ -72,9 +72,6 @@ export default function BookSearchList() {
                 imageUrl: x.volumeInfo.imageLinks
                   ? x.volumeInfo.imageLinks.thumbnail
                   : NO_IMAGE_AVAILABLE,
-                title: x.volumeInfo.title,
-                author: x.volumeInfo.authors && x.volumeInfo.authors.join(","),
-                summary: x.volumeInfo.description,
               };
             })
           )
@@ -83,12 +80,12 @@ export default function BookSearchList() {
       .catch((err) => console.error(err));
   };
 
-  const searchResultsHasMore = () =>
-    totalSearchResults > searchIndex * MAX_RESULTS;
+  const searchResultsHasMore = () => totalSearchResults > searchResults.length;
 
   return (
     <div className={classes.appContainer}>
       <InfiniteScroll
+        ref={infiniteScrollRef}
         element={"div"}
         className={"MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-4"}
         pageStart={0}

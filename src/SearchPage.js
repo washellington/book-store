@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import BookSearchList from "./BookSearchList";
 import { setBook, setBooks, removeBook } from "./actions";
 import BookCard from "./BookCard";
+import { useCookies } from "react-cookie";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,6 +25,7 @@ export default function SearchPage() {
   const { searchResults, selectedBook } = useSelector((state) => state);
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [cookies, setCookies, removeCookies] = useCookies(["wishList"]);
 
   return (
     <div className={classes.root}>
@@ -36,9 +38,25 @@ export default function SearchPage() {
       {selectedBook && (
         <BookCard
           onAdd={() => {
+            let cookieValues = cookies.wishList || [];
+
+            setCookies("wishList", [
+              ...cookieValues,
+              {
+                imageUrl: selectedBook.imageUrl,
+                id: selectedBook.id,
+              },
+            ]);
+
             dispatch(setBooks([selectedBook]));
           }}
           onRemove={() => {
+            let cookieValues = cookies.wishList || [];
+
+            setCookies(
+              "wishList",
+              cookieValues.filter((x) => x.id !== selectedBook.id)
+            );
             dispatch(removeBook(selectedBook));
           }}
           book={selectedBook}

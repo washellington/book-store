@@ -7,16 +7,6 @@ import emptyList from "./images/empty_book_list.png";
 import { useHistory } from "react-router";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import BookCard from "./BookCard";
-import {
-  setBook,
-  setSearchIndex,
-  setLoading,
-  setSearch,
-  setSearchResults,
-} from "./actions";
-import InfiniteScroll from "react-infinite-scroller";
-import { searchBook } from "./service";
 
 const useStyles = makeStyles((theme) => ({
   emptyList: {
@@ -72,7 +62,7 @@ export default function BookList(props) {
           </div>
         </div>
       )}
-      <Grid spacing={2}>
+      <Grid container spacing={2}>
         {books.length > 0 &&
           books.map((x, i) => {
             return (

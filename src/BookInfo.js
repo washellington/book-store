@@ -1,16 +1,12 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Palette from "react-palette";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Dialog from "@material-ui/core/Dialog";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
 import { usePalette } from "react-palette";
-import { Fab, Paper, Typography, useTheme } from "@material-ui/core";
+import { Fab, Paper, useTheme } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import ClampLines from "react-clamp-lines";
+import RemoveIcon from "@material-ui/icons/Remove";
+import { useCookies } from "react-cookie";
 
 const useStyles = makeStyles((theme) => ({
   summary: {
@@ -87,12 +83,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function BookInfo() {
-  const book = useSelector((state) => state.selectedBook);
+export default function BookInfo(props) {
+  const { onAdd, onRemove } = props;
+  const [cookies, setCookies, removeCookies] = useCookies(["wishList"]);
+  const wishList = cookies.wishList || [];
+  const { selectedBook } = useSelector((state) => state);
   const classes = useStyles();
   const history = useHistory();
   const theme = useTheme();
-  const { data, loading, error } = usePalette(book.imageUrl);
+  const { data, loading, error } = usePalette(selectedBook.imageUrl);
 
   return (
     <div className={classes.bookInfo}>
@@ -109,16 +108,28 @@ export default function BookInfo() {
           }}
           className={classes.imagePaper}
         >
-          <img src={book.imageUrl} />
+          <img src={selectedBook.imageUrl} />
         </Paper>
         <div className={`${classes.bookTitleAuthor} ${classes.headerSection}`}>
-          <h2>{book.title}</h2>
-          <h3>{book.author}</h3>
+          <h2>{selectedBook.title}</h2>
+          <h3>{selectedBook.author}</h3>
         </div>
       </div>
-      <p className={classes.bookSummary}>{book.summary}</p>
-      <Fab color="secondary" className={classes.fab}>
-        <AddIcon />
+      <p className={classes.bookSummary}>{selectedBook.summary}</p>
+      <Fab
+        onClick={() => {
+          wishList.find((x) => x.id === selectedBook.id) === undefined
+            ? onAdd()
+            : onRemove();
+        }}
+        color="secondary"
+        className={classes.fab}
+      >
+        {wishList.find((x) => x.id === selectedBook.id) === undefined ? (
+          <AddIcon />
+        ) : (
+          <RemoveIcon />
+        )}
       </Fab>
     </div>
   );

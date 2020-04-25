@@ -16,7 +16,6 @@ const initialState = {
   loading: false,
   selectedBook: undefined,
   searchText: "",
-  searchIndex: 0,
   totalSearchResults: 0,
 };
 
@@ -30,7 +29,6 @@ export default function bookStore(state = initialState, action) {
     case SET_SEARCH:
       return {
         ...state,
-        searchIndex: action.search.searchIndex,
         searchText: action.search.searchTerm,
         totalSearchResults: action.search.totalNumOfResults,
       };
@@ -38,11 +36,6 @@ export default function bookStore(state = initialState, action) {
       return {
         ...state,
         searchResults: [],
-      };
-    case SET_SEARCH_INDEX:
-      return {
-        ...state,
-        searchIndex: action.index,
       };
     case SET_SEARCH_TEXT:
       return {

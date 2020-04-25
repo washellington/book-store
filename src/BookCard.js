@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
@@ -11,6 +11,8 @@ import { Fab, Paper, useTheme, Button } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import ClampLines from "react-clamp-lines";
+import { useCookies } from "react-cookie";
+import { searchVolume } from "./service";
 
 const useStyles = makeStyles((theme) => ({
   summary: {
@@ -77,12 +79,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function BookCard(props) {
   const { onAdd, book, open, onClose, onRemove } = props;
-  const wishList = useSelector((state) => state.wishList);
+  const [cookies, setCookies, removeCookies] = useCookies(["wishList"]);
+
+  const wishList = cookies.wishList || [];
   const classes = useStyles();
   const history = useHistory();
   const theme = useTheme();
   const { data, loading, error } = usePalette(book.imageUrl);
 
+  console.log("book = ", book, "wishlist= ", wishList);
   return (
     <Dialog
       classes={{ paper: classes.dialogContainer }}
@@ -126,7 +131,7 @@ export default function BookCard(props) {
         </Paper>
         <div className={`${classes.bookTitleAuthor} ${classes.headerSection}`}>
           <ClampLines
-            text={book.title}
+            text={`${book.title}`}
             id="title-clamp-id"
             ellipsis="..."
             moreText="Expand"
@@ -135,7 +140,7 @@ export default function BookCard(props) {
             innerElement="h2"
           />
           <ClampLines
-            text={book.author}
+            text={`${book.author}`}
             id="author-clamp-id"
             ellipsis="..."
             moreText="Expand"
@@ -163,7 +168,7 @@ export default function BookCard(props) {
       <div>
         <ClampLines
           className={classes.summary}
-          text={book.summary}
+          text={`${book.summary}`}
           id="summary-clamp-id"
           lines={4}
           ellipsis="..."

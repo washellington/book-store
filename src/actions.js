@@ -23,23 +23,16 @@ export const removeBook = (book) => {
   };
 };
 
-export const setSearch = (searchIndex, searchTerm, totalNumOfResults) => {
+export const setSearch = (searchTerm, totalNumOfResults) => {
   return {
     type: SET_SEARCH,
     search: {
-      searchIndex,
       searchTerm,
       totalNumOfResults,
     },
   };
 };
 
-export const setSearchIndex = (index) => {
-  return {
-    type: SET_SEARCH_INDEX,
-    index,
-  };
-};
 export const setSearchText = (text) => {
   return {
     type: SET_SEARCH_TEXT,

@@ -7,6 +7,7 @@ import emptyList from "./images/empty_book_list.png";
 import { useHistory } from "react-router";
 import { setBook } from "./actions";
 import { NO_IMAGE_AVAILABLE } from "./BookSearchList";
+import { searchVolume } from "./service";
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -21,7 +22,16 @@ export default function Book(props) {
   return (
     <div
       onClick={() => {
-        dispatch(setBook(book));
+        searchVolume(book.id)
+          .then((res) => {
+            book.summary = res.data.volumeInfo.description;
+            book.title = res.data.volumeInfo.title;
+            book.author = res.data.volumeInfo.authors.join(",");
+            dispatch(setBook(book));
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       }}
     >
       {book.imageUrl === NO_IMAGE_AVAILABLE ? (

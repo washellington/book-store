@@ -22,3 +22,11 @@ export const searchBook = (searchText, startIndex) => {
     },
   });
 };
+
+export const searchVolume = (volumeId) => {
+  return api.get(`${BOOK_SEARCH}/${volumeId}`, {
+    params: {
+      key: process.env.REACT_APP_GOOGLE_BOOKS_API_KEY,
+    },
+  });
+};

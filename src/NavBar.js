@@ -73,7 +73,7 @@ export default function NavBar(props) {
   const history = useHistory();
   const theme = useTheme();
   const [cookies, setCookies, removeCookies] = useCookies(["recentSearches"]);
-  const { searchText, searchIndex = 0 } = useSelector((state) => state);
+  const { searchText } = useSelector((state) => state);
   const recentSearchesOptions = (cookies.recentSearches || []).map((x) => ({
     label: x,
     value: x,
@@ -103,6 +103,12 @@ export default function NavBar(props) {
               className={classes.searchField}
               autoFocus={isFocused}
               value={{ label: searchText, value: searchText }}
+              formatGroupLabel={
+                <div>
+                  <span>Recent Searches</span>
+                  <span></span>
+                </div>
+              }
               options={recentSearchesOptions}
               onChange={(selectedOption) => {
                 console.log(selectedOption);
@@ -115,29 +121,21 @@ export default function NavBar(props) {
                   dispatch(setBook(undefined));
                   history.push("/search");
                   dispatch(setLoading(true));
-                  searchBook(selectedOption.value, searchIndex)
+                  searchBook(selectedOption.value, 0)
                     .then((res) => {
                       //dispatch set books
                       dispatch(setLoading(false));
                       dispatch(
-                        setSearch(
-                          searchIndex,
-                          selectedOption.value,
-                          res.data.totalItems
-                        )
+                        setSearch(selectedOption.value, res.data.totalItems)
                       );
                       dispatch(
                         setSearchResults(
                           res.data.items.map((x) => {
                             return {
+                              id: x.id,
                               imageUrl: x.volumeInfo.imageLinks
                                 ? x.volumeInfo.imageLinks.thumbnail
                                 : "No image available",
-                              title: x.volumeInfo.title,
-                              author:
-                                x.volumeInfo.authors &&
-                                x.volumeInfo.authors.join(","),
-                              summary: x.volumeInfo.description,
                             };
                           })
                         )
@@ -176,6 +174,11 @@ export default function NavBar(props) {
             <ListItem button onClick={() => history.push("/search")}>
               <ListItemText>
                 <Typography color="secondary">Search</Typography>
+              </ListItemText>
+            </ListItem>
+            <ListItem button onClick={() => history.push("/settings")}>
+              <ListItemText>
+                <Typography color="secondary">Settings</Typography>
               </ListItemText>
             </ListItem>
           </List>
