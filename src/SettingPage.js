@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
 import NavBar from "./NavBar";
 import BookInfo from "./BookInfo";
-import { setBooks, removeBook } from "./actions";
+import { setBooks, removeBook, setSearchText } from "./actions";
 import { useCookies } from "react-cookie";
 import {
   List,
@@ -39,6 +39,10 @@ export default function SettingPage() {
   const [openSnackBar, setOpenSnackBar] = React.useState(false);
   const [snackBarMsg, setSnackBarMsg] = React.useState("");
   const [selectedAction, setSelectedAction] = React.useState();
+
+  useEffect(() => {
+    dispatch(setSearchText(""));
+  }, []);
 
   const CLEAR_ALL = {
     type: "CLEAR_ALL",

@@ -103,15 +103,13 @@ export default function NavBar(props) {
               className={classes.searchField}
               autoFocus={isFocused}
               value={{ label: searchText, value: searchText }}
-              formatGroupLabel={
-                <div>
-                  <span>Recent Searches</span>
-                  <span></span>
-                </div>
-              }
-              options={recentSearchesOptions}
+              options={[
+                {
+                  label: "Recent Searches",
+                  options: recentSearchesOptions,
+                },
+              ]}
               onChange={(selectedOption) => {
-                console.log("selectedOption", selectedOption);
                 dispatch(
                   setSearchText(selectedOption ? selectedOption.value : "")
                 );

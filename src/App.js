@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import NavBar from "./NavBar";
 import BookList from "./BookList";
 import { makeStyles } from "@material-ui/core/styles";
 import { Chip, Button } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import emptyList from "./images/empty_book_list.png";
 import { useHistory } from "react-router";
 import { useCookies } from "react-cookie";
+import { setSearchText } from "./actions";
 const useStyles = makeStyles((theme) => ({
   app: {
     display: "flex",
@@ -36,9 +37,14 @@ function App() {
   const history = useHistory();
   const [cookies, setCookies, removeCookies] = useCookies(["wishList"]);
 
-  const { wishList } = useSelector((state) => {
+  const { wishList, searchText } = useSelector((state) => {
     return state;
   });
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setSearchText(""));
+  }, []);
 
   return (
     <div className={classes.app}>
