@@ -111,12 +111,19 @@ export default function NavBar(props) {
               }
               options={recentSearchesOptions}
               onChange={(selectedOption) => {
-                console.log(selectedOption);
+                console.log("selectedOption", selectedOption);
                 dispatch(
                   setSearchText(selectedOption ? selectedOption.value : "")
                 );
 
                 if (selectedOption) {
+                  let cookieValues = cookies.recentSearches || [];
+                  if (!cookieValues.includes(selectedOption.value)) {
+                    setCookies("recentSearches", [
+                      ...cookieValues,
+                      selectedOption.value,
+                    ]);
+                  }
                   dispatch(resetSearchResults());
                   dispatch(setBook(undefined));
                   history.push("/search");
@@ -147,10 +154,6 @@ export default function NavBar(props) {
               placeholder=""
               formatCreateLabel={(x) => <>{x}</>}
               isClearable
-              onCreateOption={(x) => {
-                let cookieValues = cookies.recentSearches || [];
-                setCookies("recentSearches", [...cookieValues, x]);
-              }}
               noOptionsMessage={() => <>No recent search results</>}
               InputProps={{
                 startAdornment: (
