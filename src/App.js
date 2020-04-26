@@ -57,7 +57,7 @@ function App() {
           <Chip
             className={classes.chipCounter}
             color="secondary"
-            label={cookies.wishList.length}
+            label={(cookies.wishList || []).length}
           />
         </h1>
         <BookList books={cookies.wishList || []} />
