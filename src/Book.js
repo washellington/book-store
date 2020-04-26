@@ -5,7 +5,7 @@ import { Chip, Button } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import emptyList from "./images/empty_book_list.png";
 import { useHistory } from "react-router";
-import { setBook } from "./actions";
+import { setBook, setLoading } from "./actions";
 import { NO_IMAGE_AVAILABLE } from "./BookSearchList";
 import { searchVolume } from "./service";
 
@@ -23,6 +23,7 @@ export default function Book(props) {
     <div
       onClick={() => {
         console.log(book);
+        dispatch(setLoading(true));
         searchVolume(book.id)
           .then((res) => {
             book.summary = res.data.volumeInfo.description;
@@ -32,6 +33,9 @@ export default function Book(props) {
           })
           .catch((err) => {
             console.error(err);
+          })
+          .finally(() => {
+            dispatch(setLoading(false));
           });
       }}
     >

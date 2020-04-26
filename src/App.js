@@ -4,12 +4,13 @@ import "./App.css";
 import NavBar from "./NavBar";
 import BookList from "./BookList";
 import { makeStyles } from "@material-ui/core/styles";
-import { Chip, Button } from "@material-ui/core";
+import { Chip, Button, Backdrop } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import emptyList from "./images/empty_book_list.png";
 import { useHistory } from "react-router";
 import { useCookies } from "react-cookie";
 import { setSearchText, setBook } from "./actions";
+import Loader from "./Loader";
 const useStyles = makeStyles((theme) => ({
   app: {
     display: "flex",
@@ -30,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
   mainContent: {
     paddingTop: 112,
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+  },
 }));
 
 function App() {
@@ -37,10 +41,12 @@ function App() {
   const history = useHistory();
   const [cookies, setCookies, removeCookies] = useCookies(["wishList"]);
 
-  const { searchText } = useSelector((state) => {
+  const { searchText, loading } = useSelector((state) => {
     return state;
   });
   const dispatch = useDispatch();
+
+  const wishList = cookies.wishList || [];
 
   useEffect(() => {
     dispatch(setSearchText(""));
@@ -57,10 +63,15 @@ function App() {
           <Chip
             className={classes.chipCounter}
             color="secondary"
-            label={(cookies.wishList || []).length}
+            label={wishList.length}
           />
         </h1>
-        <BookList books={cookies.wishList || []} />
+        <BookList books={wishList} />
+        {loading && (
+          <Backdrop className={classes.backdrop} open={loading}>
+            <Loader />
+          </Backdrop>
+        )}
       </div>
     </div>
   );

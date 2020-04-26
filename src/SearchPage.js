@@ -7,6 +7,8 @@ import { setBook, setBooks, removeBook } from "./actions";
 import BookCard from "./BookCard";
 import { useCookies } from "react-cookie";
 import Palette from "react-palette";
+import Loader from "./Loader";
+import { Backdrop } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,14 +18,20 @@ const useStyles = makeStyles((theme) => ({
   overlay: {
     flex: 1,
     backgroundColor: theme.palette.action.disabled,
+    marginTop: 112,
   },
   wishList: {
-    paddingTop: "112px",
+    marginTop: 112,
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
   },
 }));
 
 export default function SearchPage() {
-  const { searchResults, selectedBook } = useSelector((state) => state);
+  const { loading, searchResults, selectedBook } = useSelector(
+    (state) => state
+  );
   const classes = useStyles();
   const dispatch = useDispatch();
   const [cookies, setCookies, removeCookies] = useCookies(["wishList"]);
@@ -38,7 +46,12 @@ export default function SearchPage() {
       <div
         className={searchResults.length ? classes.wishList : classes.overlay}
       >
-        <BookSearchList />
+        {loading && (
+          <Backdrop className={classes.backdrop} open={loading}>
+            <Loader />
+          </Backdrop>
+        )}
+        {searchResults.length > 0 && <BookSearchList />}
       </div>
       {selectedBook && (
         <BookCard

@@ -10,6 +10,7 @@ import BookCard from "./BookCard";
 import { setSearch, setSearchResults } from "./actions";
 import InfiniteScroll from "react-infinite-scroller";
 import { searchBook, MAX_RESULTS } from "./service";
+import Loader from "./Loader";
 
 const useStyles = makeStyles((theme) => ({
   emptyList: {
@@ -93,11 +94,7 @@ export default function BookSearchList() {
         loadMore={loadSearchResults}
         //search results has more if the total number of results(page * number of results displayed) shown in less then the total number of itmes
         hasMore={searchResultsHasMore}
-        loader={
-          <div className="loader" key={0}>
-            Loading ...
-          </div>
-        }
+        loader={<Loader />}
       >
         {searchResults.length > 0 &&
           searchResults.map((x, i) => {
