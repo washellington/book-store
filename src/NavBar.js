@@ -13,6 +13,7 @@ import {
   ListItem,
   ListItemText,
   Typography,
+  ListItemIcon,
 } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
@@ -31,6 +32,9 @@ import {
 } from "./actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
+import AnimatedHome from "./images/AnimatedHome";
+import AnimatedSearch from "./images/AnimatedSearch";
+import AnimatedSettings from "./images/AnimatedSettings";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -168,16 +172,25 @@ export default function NavBar(props) {
         <div className={classes.drawerContainer}>
           <List>
             <ListItem button onClick={() => history.push("/")}>
+              <ListItemIcon>
+                <AnimatedHome />
+              </ListItemIcon>
               <ListItemText>
                 <Typography color="secondary">Home</Typography>
               </ListItemText>
             </ListItem>
             <ListItem button onClick={() => history.push("/search")}>
+              <ListItemIcon>
+                <AnimatedSearch />
+              </ListItemIcon>
               <ListItemText>
                 <Typography color="secondary">Search</Typography>
               </ListItemText>
             </ListItem>
             <ListItem button onClick={() => history.push("/settings")}>
+              <ListItemIcon>
+                <AnimatedSettings />
+              </ListItemIcon>
               <ListItemText>
                 <Typography color="secondary">Settings</Typography>
               </ListItemText>

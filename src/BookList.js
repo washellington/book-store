@@ -9,7 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import BookCard from "./BookCard";
 import { useCookies } from "react-cookie";
-import { setBook } from "./actions";
+import { setBook, resetSearchResults } from "./actions";
 
 const useStyles = makeStyles((theme) => ({
   emptyList: {
@@ -60,7 +60,13 @@ export default function BookList(props) {
               src={emptyList}
               alt="Empty wish list"
             />
-            <Button onClick={() => history.push("/search")} color="secondary">
+            <Button
+              onClick={() => {
+                dispatch(resetSearchResults());
+                history.push("/search");
+              }}
+              color="secondary"
+            >
               Add book
             </Button>
           </div>
