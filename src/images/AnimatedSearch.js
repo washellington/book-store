@@ -30,8 +30,6 @@ export default function AnimatedSearch() {
                     style={{
                       transformOrigin: "50px 50px",
                       transform: "skewX(0deg)",
-                      animation:
-                        "1.11111s linear -0.740741s infinite normal forwards running jelly-alt-993610f0-fa81-434c-8a7a-85620d24cc75",
                     }}
                   >
                     <path
@@ -52,8 +50,6 @@ export default function AnimatedSearch() {
                     style={{
                       transformOrigin: "50px 50px",
                       transform: "skewX(0deg)",
-                      animation:
-                        "1.11111s linear -0.925926s infinite normal forwards running jelly-alt-993610f0-fa81-434c-8a7a-85620d24cc75",
                     }}
                   >
                     <circle
@@ -72,8 +68,6 @@ export default function AnimatedSearch() {
                     style={{
                       transformOrigin: "50px 50px",
                       transform: "skewX(0deg)",
-                      animation:
-                        "1.11111s linear -1.11111s infinite normal forwards running jelly-alt-993610f0-fa81-434c-8a7a-85620d24cc75",
                     }}
                   >
                     <path

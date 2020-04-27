@@ -22,8 +22,6 @@ export default function AnimatedHome() {
               style={{
                 transformOrigin: "50px 50px",
                 transform: "scale(1)",
-                animation:
-                  "1.11111s linear -1.11111s infinite normal forwards running beat-4d9243ff-c38f-437b-ad90-745d5f85c7de",
               }}
             >
               <path

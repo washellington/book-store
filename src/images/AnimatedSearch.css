@@ -35,3 +35,15 @@
     transform: skewX(-0.8200000000000001deg);
   }
 }
+
+#search-drawer:hover svg .ldl-ani .ldl-ani .ldl-ani {
+  animation: 1.11111s linear -1.11111s infinite normal forwards running jelly-alt-993610f0-fa81-434c-8a7a-85620d24cc75;
+}
+
+#search-drawer:hover svg .ldl-ani .ldl-ani {
+  animation: 1.11111s linear -0.925926s infinite normal forwards running jelly-alt-993610f0-fa81-434c-8a7a-85620d24cc75;
+}
+
+#search-drawer:hover svg .ldl-ani {
+  animation: 1.11111s linear -0.740741s infinite normal forwards running jelly-alt-993610f0-fa81-434c-8a7a-85620d24cc75;
+}

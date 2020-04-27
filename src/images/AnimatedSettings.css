@@ -35,3 +35,27 @@
     transform: skewX(-0.8200000000000001deg);
   }
 }
+
+#settings-drawer:hover svg .ldl-ani .ldl-layer:first-child .ldl-ani {
+  animation: 1.11111s linear -0.648148s infinite normal forwards running jelly-alt-b14ae28a-7bba-41c8-9f04-1f999932c84f;
+}
+
+#settings-drawer:hover svg .ldl-ani .ldl-layer:nth-child(2n) .ldl-ani {
+  animation: 1.11111s linear -0.740741s infinite normal forwards running jelly-alt-b14ae28a-7bba-41c8-9f04-1f999932c84f;
+}
+
+#settings-drawer:hover svg .ldl-ani .ldl-layer:nth-child(3n) .ldl-ani {
+  animation: 1.11111s linear -0.833333s infinite normal forwards running jelly-alt-b14ae28a-7bba-41c8-9f04-1f999932c84f;
+}
+
+#settings-drawer:hover svg .ldl-ani .ldl-layer:nth-child(4n) .ldl-ani {
+  animation: 1.11111s linear -0.925926s infinite normal forwards running jelly-alt-b14ae28a-7bba-41c8-9f04-1f999932c84f;
+}
+
+#settings-drawer:hover svg .ldl-ani .ldl-layer:nth-child(5n) .ldl-ani {
+  animation: 1.11111s linear -1.01852s infinite normal forwards running jelly-alt-b14ae28a-7bba-41c8-9f04-1f999932c84f;
+}
+
+#settings-drawer:hover svg .ldl-ani .ldl-layer:nth-child(6n) .ldl-ani {
+  animation: 1.11111s linear -1.11111s infinite normal forwards running jelly-alt-b14ae28a-7bba-41c8-9f04-1f999932c84f;
+}

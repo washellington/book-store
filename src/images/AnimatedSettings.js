@@ -27,8 +27,6 @@ export default function AnimatedSettings() {
               style={{
                 transformOrigin: "50px 50px",
                 transform: "skewX(0deg)",
-                animation:
-                  "1.11111s linear -0.648148s infinite normal forwards running jelly-alt-b14ae28a-7bba-41c8-9f04-1f999932c84f",
               }}
             >
               <path
@@ -47,8 +45,6 @@ export default function AnimatedSettings() {
               style={{
                 transformOrigin: "50px 50px",
                 transform: "skewX(0deg)",
-                animation:
-                  "1.11111s linear -0.740741s infinite normal forwards running jelly-alt-b14ae28a-7bba-41c8-9f04-1f999932c84f",
               }}
             >
               <path
@@ -70,8 +66,6 @@ export default function AnimatedSettings() {
               style={{
                 transformOrigin: "50px 50px",
                 transform: "skewX(0deg)",
-                animation:
-                  "1.11111s linear -0.833333s infinite normal forwards running jelly-alt-b14ae28a-7bba-41c8-9f04-1f999932c84f",
               }}
             >
               <path
@@ -90,8 +84,6 @@ export default function AnimatedSettings() {
               style={{
                 transformOrigin: "50px 50px",
                 transform: "skewX(0deg)",
-                animation:
-                  "1.11111s linear -0.925926s infinite normal forwards running jelly-alt-b14ae28a-7bba-41c8-9f04-1f999932c84f",
               }}
             >
               <path
@@ -113,8 +105,6 @@ export default function AnimatedSettings() {
               style={{
                 transformOrigin: "50px 50px",
                 transform: "skewX(0deg)",
-                animation:
-                  "1.11111s linear -1.01852s infinite normal forwards running jelly-alt-b14ae28a-7bba-41c8-9f04-1f999932c84f",
               }}
             >
               <path
@@ -133,8 +123,6 @@ export default function AnimatedSettings() {
               style={{
                 transformOrigin: "50px 50px",
                 transform: "skewX(0deg)",
-                animation:
-                  "1.11111s linear -1.11111s infinite normal forwards running jelly-alt-b14ae28a-7bba-41c8-9f04-1f999932c84f",
               }}
             >
               <path
