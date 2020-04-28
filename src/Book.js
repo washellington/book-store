@@ -42,7 +42,13 @@ export default function Book(props) {
       {book.imageUrl === NO_IMAGE_AVAILABLE ? (
         <div>{NO_IMAGE_AVAILABLE}</div>
       ) : (
-        <img className={classes.image} src={book.imageUrl} />
+        <img
+          style={{
+            width: "100%",
+          }}
+          className={classes.image}
+          src={book.imageUrl}
+        />
       )}
     </div>
   );

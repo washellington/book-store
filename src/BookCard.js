@@ -148,7 +148,12 @@ export default function BookCard(props) {
                   minWidth600 ? classes.imagePaperWeb : classes.imagePaper
                 }
               >
-                <img src={book.imageUrl} />
+                <img
+                  style={{
+                    width: "100%",
+                  }}
+                  src={book.imageUrl}
+                />
               </Paper>
               <div>
                 <h2>{book.title}</h2>
@@ -213,7 +218,12 @@ export default function BookCard(props) {
               }}
               className={classes.imagePaper}
             >
-              <img src={book.imageUrl} />
+              <img
+                style={{
+                  width: "100%",
+                }}
+                src={book.imageUrl}
+              />
             </Paper>
             <div
               className={`${classes.bookTitleAuthor} ${classes.headerSection}`}
