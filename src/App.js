@@ -4,7 +4,7 @@ import "./App.css";
 import NavBar from "./NavBar";
 import BookList from "./BookList";
 import { makeStyles } from "@material-ui/core/styles";
-import { Chip, Button, Backdrop } from "@material-ui/core";
+import { Chip, Button, Backdrop, useMediaQuery } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import emptyList from "./images/empty_book_list.png";
 import { useHistory } from "react-router";
@@ -29,7 +29,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 10,
   },
   mainContent: {
-    paddingTop: 112,
+    marginTop: 112,
+  },
+  mainContentWeb: {
+    marginTop: 128,
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -46,6 +49,8 @@ function App() {
   });
   const dispatch = useDispatch();
 
+  const minWidth600 = useMediaQuery("(min-width:600px)");
+
   const wishList = cookies.wishList || [];
 
   useEffect(() => {
@@ -57,7 +62,9 @@ function App() {
   return (
     <div className={classes.app}>
       <NavBar />
-      <div className={classes.mainContent}>
+      <div
+        className={minWidth600 ? classes.mainContentWeb : classes.mainContent}
+      >
         <h1 className={classes.header1}>
           Wish List
           <Chip

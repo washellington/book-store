@@ -7,7 +7,14 @@ import { useHistory } from "react-router";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import { usePalette } from "react-palette";
-import { Fab, Paper, useTheme, Button } from "@material-ui/core";
+import {
+  Fab,
+  Paper,
+  useTheme,
+  Button,
+  useMediaQuery,
+  Drawer,
+} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import ClampLines from "react-clamp-lines";
@@ -32,9 +39,27 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     zIndex: 1,
   },
+  colorSwatchWeb: {
+    top: 0,
+    right: 0,
+    height: "20vw",
+    width: "100%",
+    zIndex: 1,
+    display: "flex",
+    alignItems: "flex-end",
+    justifyContent: "space-evenly",
+  },
   bookHeader: {
     display: "flex",
     zIndex: 1000,
+  },
+  imagePaperWeb: {
+    width: "9vw",
+    height: "14vw",
+    overflow: "hidden",
+    "& img": {
+      maxWidth: "100%",
+    },
   },
   imagePaper: {
     width: "28vw",
@@ -48,6 +73,11 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "flex-end",
     width: "14vw",
     height: "14vw",
+  },
+  fabWeb: {
+    alignSelf: "flex-end",
+    marginBottom: -20,
+    flex: "none",
   },
   bookTitleAuthor: {
     margin: "0px 10px",
@@ -75,6 +105,12 @@ const useStyles = makeStyles((theme) => ({
   expandLink: {
     float: "right",
   },
+  drawerContainer: {
+    width: "40vw",
+  },
+  bookSummaryWeb: {
+    padding: "0 10px",
+  },
 }));
 
 export default function BookCard(props) {
@@ -86,108 +122,162 @@ export default function BookCard(props) {
   const history = useHistory();
   const theme = useTheme();
   const { data, loading, error } = usePalette(book.imageUrl);
+  const minWidth600 = useMediaQuery("(min-width:600px)");
 
   console.log("book = ", book, "wishlist= ", wishList);
   return (
-    <Dialog
-      classes={{ paper: classes.dialogContainer }}
-      onClose={onClose}
-      aria-labelledby="simple-dialog-title"
-      open={open}
-    >
-      <DialogTitle
-        style={{
-          color: data.vibrant,
-          backgroundColor: data.lightMuted,
-          zIndex: 1000,
-        }}
-        id="simple-dialog-title"
-      >
-        <IconButton
-          aria-label="close"
-          className={classes.closeButton}
-          onClick={onClose}
-          style={{ color: theme.palette.text.primary }}
+    <>
+      {minWidth600 && (
+        <Drawer anchor="right" open={open} onClose={onClose}>
+          <div className={classes.drawerContainer}>
+            <div
+              className={
+                minWidth600 ? classes.colorSwatchWeb : classes.colorSwatch
+              }
+              style={{
+                color: theme.palette.text.primary,
+                backgroundColor: data.lightMuted,
+              }}
+            >
+              <Paper
+                elevation={6}
+                style={{
+                  backgroundColor: data.lightMuted,
+                }}
+                className={
+                  minWidth600 ? classes.imagePaperWeb : classes.imagePaper
+                }
+              >
+                <img src={book.imageUrl} />
+              </Paper>
+              <div>
+                <h2>{book.title}</h2>
+                <h3>{book.author}</h3>
+              </div>
+              <Fab
+                onClick={() => {
+                  wishList.find((x) => x.id === book.id) === undefined
+                    ? onAdd()
+                    : onRemove();
+                }}
+                color="secondary"
+                className={minWidth600 ? classes.fabWeb : classes.fab}
+              >
+                {wishList.find((x) => x.id === book.id) === undefined ? (
+                  <AddIcon />
+                ) : (
+                  <RemoveIcon />
+                )}
+              </Fab>
+            </div>
+            <p className={classes.bookSummaryWeb}>{book.summary}</p>
+          </div>
+        </Drawer>
+      )}
+      {!minWidth600 && (
+        <Dialog
+          classes={{ paper: classes.dialogContainer }}
+          onClose={onClose}
+          aria-labelledby="simple-dialog-title"
+          open={open}
         >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-      <div
-        className={classes.colorSwatch}
-        style={{
-          color: data.vibrant,
-          backgroundColor: data.lightMuted,
-        }}
-      ></div>
-      <div className={`${classes.bookHeader} ${classes.headerSection}`}>
-        <Paper
-          elevation={6}
-          style={{
-            backgroundColor: data.lightMuted,
-          }}
-          className={classes.imagePaper}
-        >
-          <img src={book.imageUrl} />
-        </Paper>
-        <div className={`${classes.bookTitleAuthor} ${classes.headerSection}`}>
-          <ClampLines
-            text={`${book.title}`}
-            id="title-clamp-id"
-            ellipsis="..."
-            moreText="Expand"
-            lessText="Collapse"
-            className="clampLinesSummary"
-            innerElement="h2"
-          />
-          <ClampLines
-            text={`${book.author}`}
-            id="author-clamp-id"
-            ellipsis="..."
-            moreText="Expand"
-            lessText="Collapse"
-            className="clampLinesSummary"
-            innerElement="h3"
-          />
-          <Fab
-            onClick={() => {
-              wishList.find((x) => x.id === book.id) === undefined
-                ? onAdd()
-                : onRemove();
+          <DialogTitle
+            style={{
+              color: data.vibrant,
+              backgroundColor: data.lightMuted,
+              zIndex: 1000,
             }}
-            color="secondary"
-            className={classes.fab}
+            id="simple-dialog-title"
           >
-            {wishList.find((x) => x.id === book.id) === undefined ? (
-              <AddIcon />
-            ) : (
-              <RemoveIcon />
-            )}
-          </Fab>
-        </div>
-      </div>
-      <div>
-        <ClampLines
-          className={classes.summary}
-          text={`${book.summary}`}
-          id="summary-clamp-id"
-          lines={4}
-          ellipsis="..."
-          moreText="Expand"
-          lessText="Collapse"
-          className="clampLinesSummary"
-          innerElement="p"
-          buttons={false}
-        />
-        <Button
-          onClick={() => {
-            history.push("/book");
-          }}
-          color="secondary"
-          className={classes.expandLink}
-        >
-          EXPAND
-        </Button>
-      </div>
-    </Dialog>
+            <IconButton
+              aria-label="close"
+              className={classes.closeButton}
+              onClick={onClose}
+              style={{ color: theme.palette.text.primary }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <div
+            className={classes.colorSwatch}
+            style={{
+              color: data.vibrant,
+              backgroundColor: data.lightMuted,
+            }}
+          ></div>
+          <div className={`${classes.bookHeader} ${classes.headerSection}`}>
+            <Paper
+              elevation={6}
+              style={{
+                backgroundColor: data.lightMuted,
+              }}
+              className={classes.imagePaper}
+            >
+              <img src={book.imageUrl} />
+            </Paper>
+            <div
+              className={`${classes.bookTitleAuthor} ${classes.headerSection}`}
+            >
+              <ClampLines
+                text={`${book.title}`}
+                id="title-clamp-id"
+                ellipsis="..."
+                moreText="Expand"
+                lessText="Collapse"
+                className="clampLinesSummary"
+                innerElement="h2"
+              />
+              <ClampLines
+                text={`${book.author}`}
+                id="author-clamp-id"
+                ellipsis="..."
+                moreText="Expand"
+                lessText="Collapse"
+                className="clampLinesSummary"
+                innerElement="h3"
+              />
+              <Fab
+                onClick={() => {
+                  wishList.find((x) => x.id === book.id) === undefined
+                    ? onAdd()
+                    : onRemove();
+                }}
+                color="secondary"
+                className={classes.fab}
+              >
+                {wishList.find((x) => x.id === book.id) === undefined ? (
+                  <AddIcon />
+                ) : (
+                  <RemoveIcon />
+                )}
+              </Fab>
+            </div>
+          </div>
+          <div>
+            <ClampLines
+              className={classes.summary}
+              text={`${book.summary}`}
+              id="summary-clamp-id"
+              lines={4}
+              ellipsis="..."
+              moreText="Expand"
+              lessText="Collapse"
+              className="clampLinesSummary"
+              innerElement="p"
+              buttons={false}
+            />
+            <Button
+              onClick={() => {
+                history.push("/book");
+              }}
+              color="secondary"
+              className={classes.expandLink}
+            >
+              EXPAND
+            </Button>
+          </div>
+        </Dialog>
+      )}
+    </>
   );
 }

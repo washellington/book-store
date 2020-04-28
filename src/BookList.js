@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Book from "./Book";
-import { Chip, Button } from "@material-ui/core";
+import { Chip, Button, useMediaQuery } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import emptyList from "./images/empty_book_list.png";
 import { useHistory } from "react-router";
@@ -37,6 +37,11 @@ const useStyles = makeStyles((theme) => ({
     width: "25vw",
     overflow: "hidden",
   },
+  paperWeb: {
+    height: "14vw",
+    width: "9vw",
+    overflow: "hidden",
+  },
 }));
 
 export default function BookList(props) {
@@ -49,6 +54,7 @@ export default function BookList(props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const [cookies, setCookies, removeCookies] = useCookies();
+  const minWidth600 = useMediaQuery("(min-width:600px)");
 
   return (
     <div className={classes.appContainer}>
@@ -72,12 +78,15 @@ export default function BookList(props) {
           </div>
         </div>
       )}
-      <Grid container spacing={2}>
+      <Grid container spacing={minWidth600 ? 10 : 4}>
         {books.length > 0 &&
           books.map((x, i) => {
             return (
-              <Grid key={`book-${i}`} item xs={4}>
-                <Paper className={classes.paper} elevation={3}>
+              <Grid key={`book-${i}`} item xs={minWidth600 ? 2 : 4}>
+                <Paper
+                  className={minWidth600 ? classes.paperWeb : classes.paper}
+                  elevation={3}
+                >
                   <Book
                     book={{
                       id: x.id,

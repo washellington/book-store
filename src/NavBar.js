@@ -87,15 +87,16 @@ export default function NavBar(props) {
     <>
       <AppBar position="fixed">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            style={{ color: theme.palette.common.white }}
-            aria-label="menu"
-            onClick={() => setOpen(true)}
-          >
-            <MenuIcon />
-          </IconButton>
+          <div className={classes.menuButton}>
+            <IconButton
+              edge="start"
+              style={{ color: theme.palette.common.white }}
+              aria-label="menu"
+              onClick={() => setOpen(true)}
+            >
+              <MenuIcon />
+            </IconButton>
+          </div>
           <div className={classes.logoContainer}>
             <img style={{ width: "3em" }} src={logo} alt="logo" />
           </div>

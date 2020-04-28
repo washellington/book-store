@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Book from "./Book";
-import { Chip, Button } from "@material-ui/core";
+import { Chip, Button, useMediaQuery } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 
 import Paper from "@material-ui/core/Paper";
@@ -38,6 +38,11 @@ const useStyles = makeStyles((theme) => ({
     width: "25vw",
     overflow: "hidden",
   },
+  paperWeb: {
+    height: "14vw",
+    width: "9vw",
+    overflow: "hidden",
+  },
 }));
 
 export const NO_IMAGE_AVAILABLE = "No image available";
@@ -54,6 +59,8 @@ export default function BookSearchList() {
 
   const infiniteScrollRef = React.createRef();
   const [scrollPage, setScrollPage] = React.useState(0);
+
+  const minWidth600 = useMediaQuery("(min-width:600px)");
 
   useEffect(() => {
     console.log("new search");
@@ -89,7 +96,9 @@ export default function BookSearchList() {
       <InfiniteScroll
         ref={infiniteScrollRef}
         element={"div"}
-        className={"MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-4"}
+        className={`MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-${
+          minWidth600 ? 10 : 4
+        }`}
         pageStart={0}
         loadMore={loadSearchResults}
         //search results has more if the total number of results(page * number of results displayed) shown in less then the total number of itmes
@@ -99,8 +108,11 @@ export default function BookSearchList() {
         {searchResults.length > 0 &&
           searchResults.map((x, i) => {
             return (
-              <Grid key={`book-${i}`} item xs={4}>
-                <Paper className={classes.paper} elevation={3}>
+              <Grid key={`book-${i}`} item xs={minWidth600 ? 2 : 4}>
+                <Paper
+                  className={minWidth600 ? classes.paperWeb : classes.paper}
+                  elevation={3}
+                >
                   <Book
                     book={{
                       ...x,
