@@ -85,7 +85,12 @@ export default function BookList(props) {
         {books.length > 0 &&
           books.map((x, i) => {
             return (
-              <Grid key={`book-${i}`} item xs={minWidth600 ? 2 : 4}>
+              <Grid
+                className="gridBook"
+                key={`book-${i}`}
+                item
+                xs={minWidth600 ? 2 : 4}
+              >
                 <Paper
                   className={minWidth600 ? classes.paperWeb : classes.paper}
                   elevation={3}
@@ -101,7 +106,7 @@ export default function BookList(props) {
             );
           })}
       </Grid>
-      {selectedBook && (
+      {true && (
         <BookCard
           onAdd={() => {
             let cookieValues = cookies.wishList || [];

@@ -31,10 +31,17 @@ export const play = (pathname, node, appears) => {
   const delay = appears ? 0 : 0.5;
   let timeline;
 
-  if (pathname === "/") timeline = getHomeTimeline(node, delay);
-  else if (pathname === "/settings")
-    timeline = getSettingsTimeline(node, delay);
-  else timeline = getDefaultTimeline(node, delay);
+  switch (pathname) {
+    case "/":
+      timeline = getHomeTimeline(node, delay);
+      break;
+    case "/settings":
+      timeline = getSettingsTimeline(node, delay);
+      break;
+    default:
+      timeline = gsap.timeline({ paused: true }); //getDefaultTimeline(node, delay);
+      break;
+  }
 
   timeline.play();
 };
@@ -43,7 +50,7 @@ const getDefaultTimeline = (node, delay) => {
   const timeline = gsap.timeline({ paused: true });
   const texts = node.querySelectorAll("h1");
   const emptyBookList = node.querySelectorAll("#emptyContentContainer");
-  timeline.from(node, 1, { autoAlpha: 0, delay });
+  timeline.from(node, 0.5, { autoAlpha: 0, delay });
 
   return timeline;
 };
@@ -66,11 +73,18 @@ const getHomeTimeline = (node, delay) => {
   const timeline = gsap.timeline({ paused: true });
   const texts = node.querySelectorAll("h1");
   const emptyBookList = node.querySelectorAll("#emptyContentContainer");
+  const books = node.querySelectorAll(".gridBook");
 
   timeline
     //.from(node, 0, { display: "none", autoAlpha: 0, delay })
     .from(texts, 0.375, { autoAlpha: 0, x: -100, ease: "power1" }, 0.125)
-    .from(emptyBookList, 0.25, { y: 100, autoAlpha: 0 });
+    .from(emptyBookList, 0.25, { y: 100, autoAlpha: 0 })
+    .from(books, 0.5, {
+      y: 50,
+      stagger: 0.1,
+      autoAlpha: 0,
+      delay,
+    });
 
   return timeline;
 };

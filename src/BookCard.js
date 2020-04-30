@@ -114,7 +114,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function BookCard(props) {
-  const { onAdd, book, open, onClose, onRemove } = props;
+  const {
+    onAdd,
+    book = { title: "", imageUrl: "", author: "", summary: "" },
+    open,
+    onClose,
+    onRemove,
+  } = props;
   const [cookies, setCookies, removeCookies] = useCookies(["wishList"]);
 
   const wishList = cookies.wishList || [];

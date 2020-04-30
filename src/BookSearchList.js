@@ -11,6 +11,8 @@ import { setSearch, setSearchResults } from "./actions";
 import InfiniteScroll from "react-infinite-scroller";
 import { searchBook, MAX_RESULTS } from "./service";
 import Loader from "./Loader";
+import { TransitionGroup, Transition } from "react-transition-group";
+import gsap from "gsap";
 
 const useStyles = makeStyles((theme) => ({
   emptyList: {
@@ -91,6 +93,16 @@ export default function BookSearchList() {
 
   const searchResultsHasMore = () => totalSearchResults > searchResults.length;
 
+  const animateBookEnter = (node) => {
+    const tween = gsap.timeline({ paused: true });
+    tween.from(node, 0.5, { autoAlpha: 0, y: 50, delay: 0.5 });
+    tween.play();
+  };
+
+  const animateBookExit = (node) => {
+    console.log("bye");
+  };
+
   return (
     <div className={classes.appContainer}>
       <InfiniteScroll
@@ -105,23 +117,31 @@ export default function BookSearchList() {
         hasMore={searchResultsHasMore}
         loader={<Loader />}
       >
-        {searchResults.length > 0 &&
-          searchResults.map((x, i) => {
-            return (
-              <Grid key={`book-${i}`} item xs={minWidth600 ? 2 : 4}>
-                <Paper
-                  className={minWidth600 ? classes.paperWeb : classes.paper}
-                  elevation={3}
+        <TransitionGroup component={null}>
+          {searchResults.length > 0 &&
+            searchResults.map((x, i) => {
+              return (
+                <Transition
+                  onEnter={(node) => animateBookEnter(node)}
+                  onExit={(node) => animateBookExit(node)}
+                  timeout={300}
                 >
-                  <Book
-                    book={{
-                      ...x,
-                    }}
-                  />
-                </Paper>
-              </Grid>
-            );
-          })}
+                  <Grid key={`book-${i}`} item xs={minWidth600 ? 2 : 4}>
+                    <Paper
+                      className={minWidth600 ? classes.paperWeb : classes.paper}
+                      elevation={3}
+                    >
+                      <Book
+                        book={{
+                          ...x,
+                        }}
+                      />
+                    </Paper>
+                  </Grid>
+                </Transition>
+              );
+            })}
+        </TransitionGroup>
       </InfiniteScroll>
     </div>
   );

@@ -19,6 +19,7 @@ import {
   DialogContentText,
   DialogActions,
   Button,
+  Slide,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ClearIcon from "@material-ui/icons/Clear";
@@ -161,6 +162,7 @@ function ConfirmationDialog(props) {
 
   return (
     <Dialog
+      transition={<Slide direction="up" />}
       open={open}
       onClose={onClose}
       aria-labelledby="alert-dialog-title"
