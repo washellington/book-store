@@ -114,7 +114,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function BookCard(props) {
-  const { onAdd, book, open, onClose, onRemove } = props;
+  const {
+    onAdd,
+    book = { title: "", imageUrl: "", author: "", summary: "" },
+    open,
+    onClose,
+    onRemove,
+  } = props;
   const [cookies, setCookies, removeCookies] = useCookies(["wishList"]);
 
   const wishList = cookies.wishList || [];
@@ -125,6 +131,7 @@ export default function BookCard(props) {
   const minWidth600 = useMediaQuery("(min-width:600px)");
 
   console.log("book = ", book, "wishlist= ", wishList);
+  if (error) console.warn("Error loading image", error);
   return (
     <>
       {minWidth600 && (

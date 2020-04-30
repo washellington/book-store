@@ -19,6 +19,7 @@ import {
   DialogContentText,
   DialogActions,
   Button,
+  Slide,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ClearIcon from "@material-ui/icons/Clear";
@@ -90,6 +91,7 @@ export default function SettingPage() {
           <ListSubheader className={classes.subHeader}>Settings</ListSubheader>
         }
         className={classes.settingsOptions}
+        id="settingsList"
       >
         <ListItem>
           <ListItemText>Clear Recent Searches</ListItemText>
@@ -160,6 +162,7 @@ function ConfirmationDialog(props) {
 
   return (
     <Dialog
+      transition={<Slide direction="up" />}
       open={open}
       onClose={onClose}
       aria-labelledby="alert-dialog-title"
