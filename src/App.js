@@ -11,6 +11,7 @@ import { useHistory } from "react-router";
 import { useCookies } from "react-cookie";
 import { setSearchText, setBook } from "./actions";
 import Loader from "./Loader";
+import gsap from "gsap";
 const useStyles = makeStyles((theme) => ({
   app: {
     display: "flex",

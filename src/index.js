@@ -16,6 +16,8 @@ import SearchPage from "./SearchPage";
 import BookPage from "./BookPage";
 import SettingPage from "./SettingPage";
 import { CookiesProvider } from "react-cookie";
+import { TransitionGroup, Transition } from "react-transition-group";
+import gsap from "gsap";
 
 const middlewareEnhancer = applyMiddleware(loggerMiddleware, thunkMiddleware);
 
@@ -25,17 +27,57 @@ const theme = createMuiTheme({
   palette: colorPalette,
 });
 
+export const play = (pathname, node, appears) => {
+  const delay = appears ? 0 : 0.5;
+  let timeline;
+
+  if (pathname === "/") timeline = getHomeTimeline(node, delay);
+  else timeline = gsap.timeline(); //getDefaultTimeline(node, delay);
+
+  timeline.play();
+};
+
+const getHomeTimeline = (node, delay) => {
+  const timeline = gsap.timeline({ paused: true });
+  const texts = node.querySelectorAll("h1");
+  const emptyBookList = node.querySelectorAll("#emptyContentContainer");
+
+  timeline
+    //.from(node, 0, { display: "none", autoAlpha: 0, delay })
+    .from(texts, 0.375, { autoAlpha: 0, x: -100, ease: "power1" }, 0.125)
+    .from(emptyBookList, 0.25, { y: 100, autoAlpha: 0 });
+
+  return timeline;
+};
+
 ReactDOM.render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
       <CookiesProvider>
         <BrowserRouter>
-          <Switch>
-            <Route exact path="/" component={App} />
-            <Route exact path="/search" component={SearchPage} />
-            <Route exact path="/book" component={BookPage} />
-            <Route exact path="/settings" component={SettingPage} />
-          </Switch>
+          <Route
+            render={({ location }) => {
+              const { pathname, key } = location;
+
+              return (
+                <TransitionGroup component={null}>
+                  <Transition
+                    key={key}
+                    appear={true}
+                    onEnter={(node, appears) => play(pathname, node, appears)}
+                    timeout={{ enter: 750, exit: 0 }}
+                  >
+                    <Switch>
+                      <Route exact path="/" component={App} />
+                      <Route exact path="/search" component={SearchPage} />
+                      <Route exact path="/book" component={BookPage} />
+                      <Route exact path="/settings" component={SettingPage} />
+                    </Switch>
+                  </Transition>
+                </TransitionGroup>
+              );
+            }}
+          />
         </BrowserRouter>
       </CookiesProvider>
     </ThemeProvider>

@@ -172,7 +172,14 @@ export default function NavBar(props) {
       <Drawer open={open} onClose={() => setOpen(false)}>
         <div className={classes.drawerContainer}>
           <List>
-            <ListItem id="home-drawer" button onClick={() => history.push("/")}>
+            <ListItem
+              id="home-drawer"
+              button
+              onClick={() => {
+                setOpen(false);
+                history.push("/");
+              }}
+            >
               <ListItemIcon>
                 <AnimatedHome />
               </ListItemIcon>
@@ -183,7 +190,10 @@ export default function NavBar(props) {
             <ListItem
               id="search-drawer"
               button
-              onClick={() => history.push("/search")}
+              onClick={() => {
+                setOpen(false);
+                history.push("/search");
+              }}
             >
               <ListItemIcon>
                 <AnimatedSearch />
@@ -195,7 +205,10 @@ export default function NavBar(props) {
             <ListItem
               id="settings-drawer"
               button
-              onClick={() => history.push("/settings")}
+              onClick={() => {
+                setOpen(false);
+                history.push("/settings");
+              }}
             >
               <ListItemIcon>
                 <AnimatedSettings />

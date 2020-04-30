@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Book from "./Book";
 import { Chip, Button, useMediaQuery } from "@material-ui/core";
@@ -10,6 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import BookCard from "./BookCard";
 import { useCookies } from "react-cookie";
 import { setBook, resetSearchResults } from "./actions";
+import gsap from "gsap";
 
 const useStyles = makeStyles((theme) => ({
   emptyList: {
@@ -56,11 +57,13 @@ export default function BookList(props) {
   const [cookies, setCookies, removeCookies] = useCookies();
   const minWidth600 = useMediaQuery("(min-width:600px)");
 
+  const [emptyListContainer, setEmptyListContainer] = React.useState();
+
   return (
     <div className={classes.appContainer}>
       {books.length === 0 && (
-        <div className={classes.content}>
-          <div className={classes.emptyContent}>
+        <div ref={setEmptyListContainer} className={classes.content}>
+          <div className={classes.emptyContent} id="emptyContentContainer">
             <img
               style={{ opacity: ".1" }}
               src={emptyList}

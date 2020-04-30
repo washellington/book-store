@@ -125,6 +125,7 @@ export default function BookCard(props) {
   const minWidth600 = useMediaQuery("(min-width:600px)");
 
   console.log("book = ", book, "wishlist= ", wishList);
+  if (error) console.warn("Error loading image", error);
   return (
     <>
       {minWidth600 && (
