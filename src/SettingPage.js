@@ -90,6 +90,7 @@ export default function SettingPage() {
           <ListSubheader className={classes.subHeader}>Settings</ListSubheader>
         }
         className={classes.settingsOptions}
+        id="settingsList"
       >
         <ListItem>
           <ListItemText>Clear Recent Searches</ListItemText>

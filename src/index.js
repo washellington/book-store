@@ -32,9 +32,34 @@ export const play = (pathname, node, appears) => {
   let timeline;
 
   if (pathname === "/") timeline = getHomeTimeline(node, delay);
-  else timeline = gsap.timeline(); //getDefaultTimeline(node, delay);
+  else if (pathname === "/settings")
+    timeline = getSettingsTimeline(node, delay);
+  else timeline = getDefaultTimeline(node, delay);
 
   timeline.play();
+};
+
+const getDefaultTimeline = (node, delay) => {
+  const timeline = gsap.timeline({ paused: true });
+  const texts = node.querySelectorAll("h1");
+  const emptyBookList = node.querySelectorAll("#emptyContentContainer");
+  timeline.from(node, 1, { autoAlpha: 0, delay });
+
+  return timeline;
+};
+
+const getSettingsTimeline = (node, delay) => {
+  const timeline = gsap.timeline({ paused: true });
+  const settingsListItems = node.querySelectorAll("#settingsList li");
+
+  timeline.from(settingsListItems, 1, {
+    x: -100,
+    stagger: 0.1,
+    autoAlpha: 0,
+    delay,
+  });
+
+  return timeline;
 };
 
 const getHomeTimeline = (node, delay) => {
