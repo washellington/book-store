@@ -162,7 +162,10 @@ function ConfirmationDialog(props) {
 
   return (
     <Dialog
-      transition={<Slide direction="up" />}
+      TransitionComponent={Slide}
+      TransitionProps={{
+        direction: "up",
+      }}
       open={open}
       onClose={onClose}
       aria-labelledby="alert-dialog-title"

@@ -83,7 +83,6 @@ const getHomeTimeline = (node, delay) => {
       y: 50,
       stagger: 0.1,
       autoAlpha: 0,
-      delay,
     });
 
   return timeline;

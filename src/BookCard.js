@@ -14,6 +14,7 @@ import {
   Button,
   useMediaQuery,
   Drawer,
+  Slide,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
@@ -192,6 +193,10 @@ export default function BookCard(props) {
           onClose={onClose}
           aria-labelledby="simple-dialog-title"
           open={open}
+          TransitionComponent={Slide}
+          TransitionProps={{
+            direction: "up",
+          }}
         >
           <DialogTitle
             style={{

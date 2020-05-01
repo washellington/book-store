@@ -83,6 +83,7 @@ export default function NavBar(props) {
     value: x,
   }));
   const [open, setOpen] = React.useState(false);
+  const [historyState, setHistoryState] = React.useState("");
   return (
     <>
       <AppBar position="fixed">
@@ -169,7 +170,17 @@ export default function NavBar(props) {
           </Box>
         </Toolbar>
       </AppBar>
-      <Drawer open={open} onClose={() => setOpen(false)}>
+      <Drawer
+        open={open}
+        SlideProps={{
+          onExited: () => {
+            if (historyState) {
+              history.push(historyState);
+            }
+          },
+        }}
+        onClose={() => setOpen(false)}
+      >
         <div className={classes.drawerContainer}>
           <List>
             <ListItem
@@ -177,7 +188,7 @@ export default function NavBar(props) {
               button
               onClick={() => {
                 setOpen(false);
-                history.push("/");
+                setHistoryState("/");
               }}
             >
               <ListItemIcon>
@@ -192,7 +203,7 @@ export default function NavBar(props) {
               button
               onClick={() => {
                 setOpen(false);
-                history.push("/search");
+                setHistoryState("/search");
               }}
             >
               <ListItemIcon>
@@ -207,7 +218,7 @@ export default function NavBar(props) {
               button
               onClick={() => {
                 setOpen(false);
-                history.push("/settings");
+                setHistoryState("/settings");
               }}
             >
               <ListItemIcon>
