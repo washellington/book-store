@@ -78,7 +78,7 @@ export default function SearchPage() {
           {searchResults.length > 0 && <BookSearchList />}
         </div>
       )}
-      {selectedBook && (
+      {true && (
         <BookCard
           onAdd={() => {
             let cookieValues = cookies.wishList || [];

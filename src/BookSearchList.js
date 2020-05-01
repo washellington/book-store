@@ -122,11 +122,15 @@ export default function BookSearchList() {
             searchResults.map((x, i) => {
               return (
                 <Transition
+                  in
+                  appear
+                  mountOnEnter
                   onEnter={(node) => animateBookEnter(node)}
                   onExit={(node) => animateBookExit(node)}
                   timeout={300}
+                  key={`transition-${x.id}`}
                 >
-                  <Grid key={`book-${i}`} item xs={minWidth600 ? 2 : 4}>
+                  <Grid key={`book-${x.id}`} item xs={minWidth600 ? 2 : 4}>
                     <Paper
                       className={minWidth600 ? classes.paperWeb : classes.paper}
                       elevation={3}

@@ -77,7 +77,7 @@ const getHomeTimeline = (node, delay) => {
 
   timeline
     //.from(node, 0, { display: "none", autoAlpha: 0, delay })
-    .from(texts, 0.375, { autoAlpha: 0, x: -100, ease: "power1" }, 0.125)
+    .from(texts, 0.5, { autoAlpha: 0, delay, x: -100, ease: "power1" }, 0.125)
     .from(emptyBookList, 0.25, { y: 100, autoAlpha: 0 })
     .from(books, 0.5, {
       y: 50,
