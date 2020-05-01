@@ -85,7 +85,6 @@ export default function SettingPage() {
   };
   return (
     <div>
-      <NavBar />
       <List
         subheader={
           <ListSubheader className={classes.subHeader}>Settings</ListSubheader>

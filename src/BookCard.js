@@ -128,7 +128,9 @@ export default function BookCard(props) {
   const classes = useStyles();
   const history = useHistory();
   const theme = useTheme();
-  const { data, loading, error } = usePalette(book.imageUrl);
+  const { data, loading, error } = usePalette(
+    `https://cors-anywhere.herokuapp.com/${book.imageUrl}`
+  );
   const minWidth600 = useMediaQuery("(min-width:600px)");
 
   console.log("book = ", book, "wishlist= ", wishList);

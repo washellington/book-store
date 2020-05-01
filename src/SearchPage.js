@@ -51,7 +51,6 @@ export default function SearchPage() {
 
   return (
     <div className={classes.root}>
-      <NavBar isFocused={true} />
       {!minWidth600 && (
         <div
           className={searchResults.length ? classes.wishList : classes.overlay}

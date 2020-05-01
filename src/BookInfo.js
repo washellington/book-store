@@ -91,7 +91,9 @@ export default function BookInfo(props) {
   const classes = useStyles();
   const history = useHistory();
   const theme = useTheme();
-  const { data, loading, error } = usePalette(selectedBook.imageUrl);
+  const { data, loading, error } = usePalette(
+    `https://cors-anywhere.herokuapp.com/${selectedBook.imageUrl}`
+  );
 
   return (
     <div className={classes.bookInfo}>

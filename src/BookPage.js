@@ -16,7 +16,6 @@ export default function BookPage() {
   });
   return (
     <div>
-      <NavBar />
       {selectedBook && (
         <BookInfo
           onAdd={() => {

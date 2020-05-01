@@ -62,7 +62,6 @@ function App() {
   console.log("wishlist", cookies.wishList);
   return (
     <div className={classes.app}>
-      <NavBar />
       <div
         className={minWidth600 ? classes.mainContentWeb : classes.mainContent}
       >

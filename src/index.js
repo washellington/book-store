@@ -18,6 +18,7 @@ import SettingPage from "./SettingPage";
 import { CookiesProvider } from "react-cookie";
 import { TransitionGroup, Transition } from "react-transition-group";
 import gsap from "gsap";
+import NavBar from "./NavBar";
 
 const middlewareEnhancer = applyMiddleware(loggerMiddleware, thunkMiddleware);
 
@@ -93,26 +94,26 @@ ReactDOM.render(
     <ThemeProvider theme={theme}>
       <CookiesProvider>
         <BrowserRouter>
+          <NavBar />
           <Route
             render={({ location }) => {
               const { pathname, key } = location;
 
               return (
-                <TransitionGroup component={null}>
-                  <Transition
-                    key={key}
-                    appear={true}
-                    onEnter={(node, appears) => play(pathname, node, appears)}
-                    timeout={{ enter: 750, exit: 0 }}
-                  >
-                    <Switch>
-                      <Route exact path="/" component={App} />
-                      <Route exact path="/search" component={SearchPage} />
-                      <Route exact path="/book" component={BookPage} />
-                      <Route exact path="/settings" component={SettingPage} />
-                    </Switch>
-                  </Transition>
-                </TransitionGroup>
+                <Transition
+                  key={key}
+                  in
+                  appear={true}
+                  onEnter={(node, appears) => play(pathname, node, appears)}
+                  timeout={{ enter: 0, exit: 0 }}
+                >
+                  <Switch>
+                    <Route exact path="/" component={App} />
+                    <Route exact path="/search" component={SearchPage} />
+                    <Route exact path="/book" component={BookPage} />
+                    <Route exact path="/settings" component={SettingPage} />
+                  </Switch>
+                </Transition>
               );
             }}
           />
