@@ -176,6 +176,7 @@ export default function NavBar(props) {
           onExited: () => {
             if (historyState) {
               history.push(historyState);
+              setHistoryState("");
             }
           },
         }}
